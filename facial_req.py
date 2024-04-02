@@ -20,7 +20,8 @@ data = pickle.loads(open(encodingsP, "rb").read())
 
 # initialize the video stream and allow the camera sensor to warm up
 #vs = VideoStream(src=2,framerate=10).start()
-vs = VideoStream(usePiCamera=True).start()
+vs = VideoStream(src=0, usePiCamera=True, framerate=10).start()
+print("started video stream")
 time.sleep(2.0)
 
 # start the FPS counter
