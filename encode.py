@@ -5,7 +5,7 @@ from imutils import paths
 import pickle
 
 def encode_faces(source_dir, target_dir, name):
-    print('Encoding for ', name, "'s face")
+    print("Encoding for {}'s face".format(name))
 
     # initialize the list of known encodings and known names
     knownEncodings = []
@@ -38,13 +38,18 @@ def encode_faces(source_dir, target_dir, name):
     # dump the facial encodings + names to disk
     print("[INFO] serializing encodings...")
     data = {"encodings": knownEncodings, "names": knownNames}
-    f = open(target_dir + "/encodings.pickle", "wb")
-    f.write(pickle.dumps(data))
+    pickle_name = target_dir + "/encodings.pickle"
+    if (not os.path.isfile(pickle_name)):
+        print("pickle file doesn't exist, creating it now...")
+    with open(pickle_name, 'ab+') as fp:
+        fp.write(pickle.dumps(data))
+    #f = open(pickle_name, "wb")
+    #f.write(pickle.dumps(data))
     #pickles = pickle.load(target_dir + "/encodings.pickle")
-    f.close()
+    #f.close()
     
     #self.save_array(numpy.array(knownEncodings), image_file_name = knownNames)
-    #print('Finished encoding', self.name)
+    print('Finished encoding', name)
 
 
 def initalize_encodings(dir):

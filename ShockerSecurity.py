@@ -12,7 +12,8 @@ import cv2
 import keyboard
 
 #Determine faces from encodings.pickle file model created from train_model.py
-encodingsP = "encodings.pickle"
+known_dir = "KnownFaces"
+encodingsP = known_dir + "/encodings.pickle"
 unknown_dir = "UnknownFaces"
 if (not os.path.isdir(unknown_dir)):
     os.mkdir(unknown_dir)
@@ -21,10 +22,14 @@ if (not os.path.isdir(unknown_dir)):
 print("[INFO] loading encodings + face detector...")
 data = pickle.loads(open(encodingsP, "rb").read())
 
-# initialize the video stream and allow the camera sensor to warm up
-#vs = VideoStream(src=2,framerate=10).start()
-# vs = VideoStream(usePiCamera=True).start()
-# time.sleep(2.0)
+
+boxes = []
+encodings = []
+names = []
+unknown_num = len(list(paths.list_images(unknown_dir))) + 1
+print("unknown num: {}".format(unknown_num))
+#Initialize 'currentname' to trigger only when a new person is identified.
+currentname = "Unknown"
 
 picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
@@ -37,6 +42,7 @@ picam2.start_preview(Preview.QTGL, width=1280, height=960)
 #cv2.resizeWindow("Facial Detection", 1200, 800)
 
 def draw_faces(request):
+	global unknown_num
 	with MappedArray(request, "main") as m:
 		# loop over the facial embeddings
 		for encoding in encodings:
@@ -73,7 +79,8 @@ def draw_faces(request):
 				#	currentname = "Unknown"
 			else:
 				print("unknown face detected! Send picture to user!")
-				cv2.imwrite(unknown_dir + "/unknown_" + unknown_num + ".jpg", rgb)
+				print("unknown num: {}".format(unknown_num))
+				cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
 				unknown_num += 1
 			# update the list of names
 			names.append(name)
@@ -89,14 +96,7 @@ def draw_faces(request):
 			y = top - 15 if top - 15 > 15 else top + 15
 			cv2.putText(m.array, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
 				.8, (0, 255, 255), 0)
-
-boxes = []
-encodings = []
-names = []
-unknown_num = list(paths.list_images(unknown_dir)).count() + 1
-#Initialize 'currentname' to trigger only when a new person is identified.
-currentname = "Unknown"
-
+				
 picam2.post_callback = draw_faces
 picam2.start(show_preview = True)
 # loop over frames from the video file stream
@@ -112,8 +112,8 @@ while True:
 	names = []
 	
 	
-	if keyboard.is_pressed('q'):
-		break
+	#if keyboard.is_pressed('q'):
+	#	break
 	# display the image to our screen
 	#cv2.imshow("Facial Detection", frame)
 	#key = cv2.waitKey(1)# & 0xFF
@@ -128,3 +128,6 @@ while True:
 cv2.destroyAllWindows()
 picam2.stop_preview()
 picam2.stop()
+
+
+

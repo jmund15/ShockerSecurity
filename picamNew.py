@@ -1,4 +1,3 @@
-import cv2.data
 import numpy
 import io
 import os
@@ -28,7 +27,7 @@ while (True):
             break
         else:
             continue
-write_dir = "Faces";         
+write_dir = "KnownFaces";         
 print("Encoding face for: " + name + "!")
 print("INSTRUCTIONS: Press space to take photo for facial detection training, press backspace to delete most recent, escape to finish")
 print("Try to get multiple angles of face for maximum accuracy. Make sure you are the only face in the picture.")
