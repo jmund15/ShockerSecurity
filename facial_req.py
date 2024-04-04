@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 # import the necessary packages
+from picamera2 import Picamera2
 from imutils.video import VideoStream
 from imutils.video import FPS
 import face_recognition
@@ -20,9 +21,14 @@ data = pickle.loads(open(encodingsP, "rb").read())
 
 # initialize the video stream and allow the camera sensor to warm up
 #vs = VideoStream(src=2,framerate=10).start()
-vs = VideoStream(src=0, usePiCamera=True, framerate=10).start()
-print("started video stream")
-time.sleep(2.0)
+# vs = VideoStream(usePiCamera=True).start()
+# time.sleep(2.0)
+
+picam2 = Picamera2()
+picam2.start()
+
+cv2.namedWindow("Facial Detection", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Facial Detection", 1200, 800)
 
 # start the FPS counter
 fps = FPS().start()
@@ -31,10 +37,10 @@ fps = FPS().start()
 while True:
 	# grab the frame from the threaded video stream and resize it
 	# to 500px (to speedup processing)
-	frame = vs.read()
-	frame = imutils.resize(frame, width=500)
+	frame = picam2.capture_array()
+	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 	# Detect the fce boxes
-	boxes = face_recognition.face_locations(frame)
+	boxes = face_recognition.face_locations(rgb)
 	# compute the facial embeddings for each face bounding box
 	encodings = face_recognition.face_encodings(frame, boxes)
 	names = []
@@ -84,7 +90,7 @@ while True:
 			.8, (0, 255, 255), 2)
 
 	# display the image to our screen
-	cv2.imshow("Facial Recognition is Running", frame)
+	cv2.imshow("Facial Detection", frame)
 	key = cv2.waitKey(1) & 0xFF
 
 	# quit when 'q' key is pressed
@@ -101,4 +107,4 @@ print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
-vs.stop()
+#vs.stop()
