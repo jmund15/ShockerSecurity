@@ -25,8 +25,10 @@ data = pickle.loads(open(encodingsP, "rb").read())
 # time.sleep(2.0)
 
 picam2 = Picamera2()
-picam2.configure(picam2.create_video_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
-picam2.start()
+picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
+
+(w0, h0) = picam2.stream_configuration("main")["size"] 
+(w1, h1) = picam2.stream_configuration("lores")["size"]
 
 cv2.namedWindow("Facial Detection", cv2.WINDOW_NORMAL)
 cv2.resizeWindow("Facial Detection", 1200, 800)
@@ -34,18 +36,7 @@ cv2.resizeWindow("Facial Detection", 1200, 800)
 # start the FPS counter
 fps = FPS().start()
 
-# loop over frames from the video file stream
-while True:
-	# grab the frame from the threaded video stream and resize it
-	# to 500px (to speedup processing)
-	frame = picam2.capture_array()
-	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-	# Detect the fce boxes
-	boxes = face_recognition.face_locations(rgb)
-	# compute the facial embeddings for each face bounding box
-	encodings = face_recognition.face_encodings(rgb, boxes)
-	names = []
-
+def draw_faces(encodings):
 	# loop over the facial embeddings
 	for encoding in encodings:
 		# attempt to match each face in the input image to our known
@@ -83,12 +74,32 @@ while True:
 
 	# loop over the recognized faces
 	for ((top, right, bottom, left), name) in zip(boxes, names):
+		# (x, y, w, h) = [c * n // d for c, n, d in zip(f, (w0, h0) * 2, (w1, h1) * 2)]            
+		# cv2.rectangle(m.array, (x, y), (x + w, y + h), (0, 255, 0, 0))
+		
 		# draw the predicted face name on the image - color is in BGR
 		cv2.rectangle(frame, (left, top), (right, bottom),
 			(0, 255, 225), 2)
 		y = top - 15 if top - 15 > 15 else top + 15
 		cv2.putText(frame, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
 			.8, (0, 255, 255), 2)
+	
+
+picam2.post_callback = draw_faces
+picam2.start(show_preview = True)
+# loop over frames from the video file stream
+while True:
+	# grab the frame from the threaded video stream and resize it
+	# to 500px (to speedup processing)
+	frame = picam2.capture_array()
+	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+	# Detect the fce boxes
+	boxes = face_recognition.face_locations(rgb)
+	# compute the facial embeddings for each face bounding box
+	encodings = face_recognition.face_encodings(rgb, boxes)
+	names = []
+
+	
 
 	# display the image to our screen
 	cv2.imshow("Facial Detection", frame)
