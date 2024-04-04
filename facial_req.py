@@ -25,6 +25,7 @@ data = pickle.loads(open(encodingsP, "rb").read())
 # time.sleep(2.0)
 
 picam2 = Picamera2()
+picam2.configure(picam2.create_video_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
 picam2.start()
 
 cv2.namedWindow("Facial Detection", cv2.WINDOW_NORMAL)
@@ -42,7 +43,7 @@ while True:
 	# Detect the fce boxes
 	boxes = face_recognition.face_locations(rgb)
 	# compute the facial embeddings for each face bounding box
-	encodings = face_recognition.face_encodings(frame, boxes)
+	encodings = face_recognition.face_encodings(rgb, boxes)
 	names = []
 
 	# loop over the facial embeddings

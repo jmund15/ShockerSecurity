@@ -9,8 +9,8 @@ import pickle
 import os
 
 picam2 = Picamera2()
+picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
 picam2.start()
-
 
 name = 'Jacob' #replace with your name
 if (not os.path.isdir(name)):
@@ -18,7 +18,7 @@ if (not os.path.isdir(name)):
 print(name)
 
 cv2.namedWindow("press space for facial detection photo, press backspace to delete most recent, escape to finish", cv2.WINDOW_NORMAL)
-cv2.resizeWindow("press space for facial detection photo, press backspace to delete most recent, escape to finish", 500, 300)
+cv2.resizeWindow("press space for facial detection photo, press backspace to delete most recent, escape to finish", 1200, 800)
 
 img_counter = 0
 while True:
