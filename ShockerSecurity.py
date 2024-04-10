@@ -2,8 +2,8 @@
 
 # import the necessary packages
 from picamera2 import Picamera2, MappedArray, Preview
-from imutils.video import VideoStream
-from imutils.video import FPS
+from imutils import paths
+import os
 import face_recognition
 import imutils
 import pickle
@@ -13,6 +13,9 @@ import keyboard
 
 #Determine faces from encodings.pickle file model created from train_model.py
 encodingsP = "encodings.pickle"
+unknown_dir = "UnknownFaces"
+if (not os.path.isdir(unknown_dir)):
+    os.mkdir(unknown_dir)
 
 # load the known faces and embeddings
 print("[INFO] loading encodings + face detector...")
@@ -68,6 +71,10 @@ def draw_faces(request):
 				#	print(currentname)
 				#else:
 				#	currentname = "Unknown"
+			else:
+				print("unknown face detected! Send picture to user!")
+				cv2.imwrite(unknown_dir + "/unknown_" + unknown_num + ".jpg", rgb)
+				unknown_num += 1
 			# update the list of names
 			names.append(name)
 
@@ -86,6 +93,7 @@ def draw_faces(request):
 boxes = []
 encodings = []
 names = []
+unknown_num = list(paths.list_images(unknown_dir)).count() + 1
 #Initialize 'currentname' to trigger only when a new person is identified.
 currentname = "Unknown"
 
@@ -101,8 +109,8 @@ while True:
 	boxes = face_recognition.face_locations(rgb)
 	# compute the facial embeddings for each face bounding box
 	encodings = face_recognition.face_encodings(rgb, boxes)
-	
 	names = []
+	
 	
 	if keyboard.is_pressed('q'):
 		break
@@ -114,15 +122,9 @@ while True:
 	# quit when 'q' key is pressed
 	#if key == ord("q"):
     #	break
-    
-	#print(key)
-	# update the FPS counter
 
-print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
-print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
 picam2.stop_preview()
 picam2.stop()
-#vs.stop()
