@@ -46,7 +46,7 @@ while True:
     cv2.imshow("press space for facial detection photo, press backspace to delete most recent, escape to finish", rgb)
 
     k = cv2.waitKey(1)
-    if k%256 == 27:
+    if k%256 == ord("q"):
         # ESC pressed
         print("Escape hit, closing...")
         break

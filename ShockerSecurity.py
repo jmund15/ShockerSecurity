@@ -34,6 +34,8 @@ currentname = "Unknown"
 picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
 picam2.start_preview(Preview.QTGL, width=1280, height=960)
+dest_dir = "MemberVideo"
+#picam2.start_and_record_video("memberVideo.mp4", duration=5)
 
 (w0, h0) = picam2.stream_configuration("main")["size"] 
 #(w1, h1) = picam2.stream_configuration("lores")["size"]
