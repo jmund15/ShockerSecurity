@@ -5,17 +5,17 @@ def convertToBinaryData(filename):
 		blobData = file.read() 
 	return blobData 
 
-def insertBLOB(photo): 
+def insertBLOB(name, photo): 
 	try: 
 		sqliteConnection = sqlite3.connect('ShockerSecurity.db') 
 		cursor = sqliteConnection.cursor() 
 		print("Connected to SQLite") 
 		
-		sqlite_insert_blob_query = """ INSERT INTO AcceptedFaces (IMG) VALUES (?)"""
+		sqlite_insert_blob_query = """ INSERT INTO AcceptedFaces (Name, IMG) VALUES (?, ?)"""
 		
 		empPhoto = convertToBinaryData(photo) 
 		
-		cursor.execute(sqlite_insert_blob_query, (empPhoto,)) 
+		cursor.execute(sqlite_insert_blob_query, (name, empPhoto,)) 
 		sqliteConnection.commit() 
 		print("Image and file inserted successfully as a BLOB into a table") 
 		cursor.close() 
@@ -35,14 +35,15 @@ cursor = sqliteConnection.cursor()
 cursor.execute("DROP TABLE IF EXISTS AcceptedFaces")
 
 table = """ CREATE TABLE AcceptedFaces (
-			ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            IMG BLB
+		ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            	Name TEXT,
+	     	IMG BLB
 		); """
 
 cursor.execute(table)
 print("Table is Ready")
 
-insertBLOB("C:\Temp\ShockerSecurity\sample1.jpg") 
+insertBLOB("Sarah", "C:\Temp\ShockerSecurity\sample1.jpg") 
 
 statement = '''SELECT * FROM AcceptedFaces'''
 
