@@ -21,38 +21,42 @@ def insertBLOB(name, photo):
 		cursor.close() 
 
 	except sqlite3.Error as error: 
-		print("Failed to insert blob data into sqlite table", error) 
+		print("Failed to insert data into sqlite table", error) 
 	
 	finally: 
 		if sqliteConnection: 
 			sqliteConnection.close() 
 
+def convertToImage(blobData, filename):
+    with open(filename, 'wb') as file:
+        file.write(blobData)
 
+def dbConnect():
+    sqliteConnection = sqlite3.connect('ShockerSecurity.db')
+    cursor = sqliteConnection.cursor()
+    table = """ CREATE TABLE IF NOT EXISTS AcceptedFaces (
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                Name TEXT,
+            IMG BLOB
+        ); """
+    cursor.execute(table)
+    print("Table is Ready")
+    return sqliteConnection, cursor
 
-sqliteConnection = sqlite3.connect('ShockerSecurity.db')
-cursor = sqliteConnection.cursor()
+if __name__ == '__main__':
+    sqliteConnection, cursor = dbConnect()
 
-cursor.execute("DROP TABLE IF EXISTS AcceptedFaces")
-
-table = """ CREATE TABLE AcceptedFaces (
-		ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            	Name TEXT,
-	     	IMG BLB
-		); """
-
-cursor.execute(table)
-print("Table is Ready")
-
-insertBLOB("Sarah", "C:\Temp\ShockerSecurity\sample1.jpg") 
-
-statement = '''SELECT * FROM AcceptedFaces'''
-
-cursor.execute(statement) 
-
-print("Data: ") 
-output = cursor.fetchall() 
-for row in output: 
-    print(row) 
-
-sqliteConnection.commit() 
-sqliteConnection.close()
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    photo_path = os.path.join(base_dir, "sample1.jpg")
+    
+    insertBLOB("Sarah", photo_path) 
+    
+    statement = '''SELECT * FROM AcceptedFaces'''
+    cursor.execute(statement) 
+    print("Data: ") 
+    output = cursor.fetchall() 
+    for row in output: 
+        print(row) 
+    
+    sqliteConnection.commit() 
+    sqliteConnection.close()
