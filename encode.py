@@ -38,7 +38,7 @@ def encode_faces(source_dir, target_dir, name):
     # dump the facial encodings + names to disk
     print("[INFO] serializing encodings...")
     data = {"encodings": knownEncodings, "names": knownNames}
-    pickle_name = target_dir + "/encodings.pickle"
+    pickle_name = target_dir + "/" + name + ".pickle"
     if (not os.path.isfile(pickle_name)):
         print("pickle file doesn't exist, creating it now...")
     with open(pickle_name, 'ab+') as fp:

@@ -2,6 +2,7 @@
 
 # import the necessary packages
 from picamera2 import Picamera2, MappedArray, Preview
+import numpy as np
 from imutils import paths
 import os
 import face_recognition
@@ -11,16 +12,29 @@ import time
 import cv2
 import keyboard
 
+# load the known faces and embeddings
+print("[INFO] loading encodings + face detector...")
 #Determine faces from encodings.pickle file model created from train_model.py
 known_dir = "KnownFaces"
-encodingsP = known_dir + "/encodings.pickle"
+#faces_data = []
+data = {}
+for fn in os.listdir(known_dir):
+    if fn.endswith('.pickle'):
+        path = os.path.join(known_dir, fn)
+        face = pickle.loads(open(path, "rb").read())
+        #print(face)
+        for key, value in face.items():
+            if key in data:
+                data[key].extend(value)
+            else:
+                data[key] = value
+        #data.update(face)
+        print(data)
+#print(data)        
+#encodingsP = known_dir + "/encodings.pickle"
 unknown_dir = "UnknownFaces"
 if (not os.path.isdir(unknown_dir)):
     os.mkdir(unknown_dir)
-
-# load the known faces and embeddings
-print("[INFO] loading encodings + face detector...")
-data = pickle.loads(open(encodingsP, "rb").read())
 
 
 boxes = []
@@ -48,6 +62,11 @@ def draw_faces(request):
 	with MappedArray(request, "main") as m:
 		# loop over the facial embeddings
 		for encoding in encodings:
+            
+            #matches = []
+            #for data in faces_data:
+            #    matches += face_recognition.compare_faces(data["encodings"],
+            #	encoding)
 			# attempt to match each face in the input image to our known
 			# encodings
 			matches = face_recognition.compare_faces(data["encodings"],
