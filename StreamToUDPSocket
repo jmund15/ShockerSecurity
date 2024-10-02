@@ -1,0 +1,28 @@
+#! /usr/bin/python
+
+# import the necessary packages
+from picamera2 import Picamera2, MappedArray, Preview
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FfmpegOutput
+from picamera2.outputs import FileOutput #when detect face for 1+ seconds, grab snapshot and video to email 
+import socket
+import time
+
+picam2 = Picamera2()
+video_config = picam2.create_preview_configuration(main={"size": (640, 480),}) # or {"size": (1280, 720)}
+picam2.configure(video_config)
+
+# WHICH ONE?
+encoder = H264Encoder(repeat=True, iperiod=15)
+encoder = H264Encoder(1000000) 
+
+output1 = FfmpegOutput("-f mpegts udp://<ip-address>:12345") 
+output2 = FileOutput()
+encoder.output = [output1, output2]
+
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+    sock.connect(("REMOTEIP", 10001))
+    stream = sock.makefile("wb")
+    picam2.start_recording(encoder, FileOutput(stream))
+    time.sleep(60) # currently only for a minute, change to indefinetely in the future
+    picam2.stop_recording()
