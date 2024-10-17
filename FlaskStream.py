@@ -11,19 +11,23 @@ import pickle
 import time
 import cv2 
 import keyboard
-from flask import Flask, Response, render_template
+from flask import Flask
+from flask import render_template, url_for, flash, request, redirect, Response
+
+import sqlite3
 import time
 import numpy as np
 import cv2
 
 app = Flask(__name__)
-
+app.debug=True
 
 @app.route('/')
 def index():
     return render_template('index.html')
     
 @app.route('/security_footage')
+#@login_required  # Protect the video feed route
 def stream_footage():
 	return Response(get_footage(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
