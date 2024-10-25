@@ -1,5 +1,4 @@
 from flask import Flask
-import sqlalchemy
 from flask_login import LoginManager
 from flask_cors import CORS
 
@@ -12,7 +11,6 @@ from flaskStream import stream
 from flaskManageFaces import faces
 
 app = Flask(__name__, static_folder='../frontend/static')
-
 app.config['SECRET_KEY'] = 'secret_key'
 CORS(app)  # Enable CORS for all routes
 
