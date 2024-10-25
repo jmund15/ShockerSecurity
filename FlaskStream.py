@@ -8,26 +8,31 @@ import os
 import face_recognition
 import imutils
 import pickle
-import time
-import cv2 
-import keyboard
-from flask import Flask
+import time 
+#import keyboard
+from flask import Flask, Blueprint
 from flask import render_template, url_for, flash, request, redirect, Response
+from flask_login import LoginManager, login_required, current_user
 
 import sqlite3
 import time
 import numpy as np
 import cv2
 
-app = Flask(__name__)
-app.debug=True
+from flaskModels import conn, curs, User
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+stream = Blueprint('stream', __name__, template_folder='../frontend')
+login_manager = LoginManager()
+login_manager.init_app(stream)
+# app = Flask(__name__)
+# app.debug=True
+
+@stream.route('/')
+def show():
+    return render_template('stream.html',title='ShockerSecurity')
     
-@app.route('/security_footage')
-#@login_required  # Protect the video feed route
+@stream.route('/security_footage')
+@login_required  # Protect the video feed route
 def stream_footage():
 	return Response(get_footage(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -194,5 +199,5 @@ if __name__=="__main__":
     #cv2.resizeWindow("Facial Detection", 1200, 800)
 
 
-    app.run(debug=True)
+    # app.run(debug=True)
 
