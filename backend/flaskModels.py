@@ -3,11 +3,11 @@ from functools import wraps
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from flask_wtf import FlaskForm
+from wtforms import Form, SubmitField, BooleanField, EmailField, StringField, PasswordField, validators
 
-from SQLiteConnect import dbConnect
+#from SQLiteConnect import dbConnect
 
-from flaskModels import User, Face
 # app = Flask(__name__)
 # app.secret_key = 'your_secret_key'
 
@@ -21,17 +21,15 @@ class User(UserMixin):
          self.id = str(id)
          self.email = email
          self.password = password
-         self.authenticated = False
+         #self.authenticated = False
     def is_active(self):
-         return self.is_active()
+        return True  # Always active for now
     def is_anonymous(self):
-         return False
+        return False  # Not an an
     def is_authenticated(self):
-         return self.authenticated
-    def is_active(self):
-         return True
+        return True  # This will be true when the user is logged in
     def get_id(self):
-         return self.id
+        return self.id
 
 class Face():
      def __init__(self, id, name, accepted, encodings, picture):
@@ -41,7 +39,31 @@ class Face():
           self.encodings = encodings
           self.picture = picture
      
-class LoginForm(Form):
-    email        = StringField('Email Address', [validators.Length(min=6, max=35)])
-    password     = PasswordField('Password', [validators.Length(min=6, max=20)])
+class LoginForm(FlaskForm):
+    email        = EmailField('Email Address', [
+         validators.Length(min=6, max=35),
+         validators.DataRequired(),
+         validators.Email()  # Optional: validates the email format
+        ])
+    password     = PasswordField('Password', [
+         validators.Length(min=6, max=20),
+         validators.DataRequired()])
+    remember = BooleanField('Remember Me') 
     #accept_rules = BooleanField('I accept the site rules', [validators.InputRequired()])
+
+class LogoutForm(FlaskForm):
+    submit = SubmitField('Logout')
+class RegisterForm(FlaskForm):
+    email = EmailField('Email Address', [
+        validators.Length(min=6, max=35),
+        validators.DataRequired(),
+        validators.Email()  # Optional: validates the email format
+    ])
+    password = PasswordField('Password', [
+        validators.Length(min=6, max=20),
+        validators.DataRequired()
+    ])
+    confirm_password = PasswordField('Confirm Password', [
+        validators.EqualTo('password', message='Passwords must match'),
+        validators.DataRequired()
+    ])

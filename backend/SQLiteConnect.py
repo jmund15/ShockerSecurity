@@ -6,13 +6,30 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from flaskModels import User, Face
 
-DATABASE = 'ShockerSecurity.db'
-conn = sqlite3.connect(DATABASE)
-curs = conn.cursor()
-#curs, conn = dbConnect()
+DATABASE = 'backend/ShockerSecurity.db'
+# conn = sqlite3.connect(DATABASE)
+# curs = conn.cursor()
+# Initialize to None at the module level
+conn = None
+curs = None
+key = None
+cipher = None
 
-key = Fernet.generate_key()
-cipher = Fernet(key)
+def initialize_db():
+    global conn, curs  # Use global to modify the module-level variables
+    if conn is None or curs is None:  # Check if they are already initialized
+        conn = sqlite3.connect(DATABASE, check_same_thread=False) #BAD!
+        curs = conn.cursor()
+    
+    global key, cipher
+    key = Fernet.generate_key()
+    cipher = Fernet(key)
+    
+    #addUser('wiispeed03@gmail.com', 'testPassword')
+    #addFace('Jacob', True, "Jacob\image_6.jpg", 'testencodings')
+    
+        
+
 
 def convertToBinaryData(filename):
     with open(filename, 'rb') as file:
@@ -27,9 +44,9 @@ def decryptData(data):
 
 def addUser(email, password):
     # Prepare the SQL insert statement
-    statement = '''INSERT INTO user (email, password) VALUES (?, ?)'''
+    statement = '''INSERT INTO users (email, password) VALUES (?, ?)'''
     # Hash the password before storing
-    hashed_password = generate_password_hash(password, method='sha256')
+    hashed_password = generate_password_hash(password)#, method='sha256')
     try:
         # Execute the insert statement
         curs.execute(statement, (email, hashed_password))
@@ -38,19 +55,47 @@ def addUser(email, password):
         print("Admin user added successfully.")
         return True
     except sqlite3.Error as e:
-        print(f"'addAdminUser' ERROR: {e}")
+        print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
         return False
-        
-def checkUser(email, password):
-    stored_password_statement = '''SELECT password FROM user WHERE email = ?'''
+    
+def getIdFromEmail(email):
+    print('email provided: ', email)
+    statement = '''SELECT uid FROM users WHERE email = ?'''
     try:
-        curs.execute(stored_password_statement, (email))
+        curs.execute(statement, (email,))
+        result = curs.fetchone()
+        if result:
+            return result[0]  # (uid, email, password)
+        else:
+            return None #'Unknown Error!' # should be impossible  
+    except sqlite3.Error as e:
+        print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
+        return None
+    
+def getUserFromID(id):
+    print('uid provided: ', id)
+    statement = '''SELECT * FROM users WHERE uid = ?'''
+    try:
+        curs.execute(statement, (id,))
+        result = curs.fetchone()
+        if result:
+            return User(result[0], result[1], result[2])  # (uid, email, password)
+        else:
+            return None #'Unknown Error!' # should be impossible  
+    except sqlite3.Error as e:
+        print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
+        return None
+    
+def validateUser(email, password):
+    stored_password_statement = '''SELECT password FROM users WHERE email = ?'''
+    try:
+        curs.execute(stored_password_statement, (email,))
         result = curs.fetchone()
         if result : #user exists 
             hashed_password = result[0]
             if not check_password_hash(hashed_password, password):
                 return None #'Incorrect Password!'  
-            statement = '''SELECT uid FROM user WHERE email = ? AND password = ?'''
+            statement = '''SELECT * FROM users WHERE email = ? AND password = ?'''
             curs.execute(statement, (email, hashed_password))
             result = curs.fetchone()
             if result:
@@ -62,7 +107,7 @@ def checkUser(email, password):
             return None #'Incorrect Email!'
     except sqlite3.Error as e:
         print(f"'checkUser' ERROR: {e}")
-        return False, None
+        return None
 def getAllFaces() -> list[Face]:
     statement = '''SELECT * FROM faces'''
     faces = list[Face]
@@ -104,7 +149,24 @@ def updateFace(id, name, accepted) -> bool: #face encodings and pictures won't b
     except sqlite3.Error as e:
         print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
         return False
-        
+
+def addFace(name, accepted, pictureLoc, encodings):
+    statement = ''' INSERT INTO faces (name, accepted, picture, encodings) VALUES (?, ?, ?, ?)'''
+
+    empPhoto = convertToBinaryData(pictureLoc)
+    encryptedPhoto = encryptData(empPhoto)
+    # Hash the password before storing
+    try:
+        # Execute the insert statement
+        curs.execute(statement, (name, accepted, encryptedPhoto, encodings))
+        # Commit the transaction
+        conn.commit()
+        print("Image and file inserted successfully as a BLOB into a table")
+        return True
+    except sqlite3.Error as e:
+        print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
+        return False
+    
 def insertBLOB(name, photo):
     try:
         sqliteConnection = sqlite3.connect(DATABASE)

@@ -9,9 +9,21 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Faces Database</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
+        <div class="navbar">
+            <div class="tabs">
+                <a href="{{ url_for('stream.show') }}" class="tab">Live Stream</a>
+                <a href="{{ url_for('faces.get_faces') }}" class="tab active">Faces Database</a>
+            </div>
+            <div class="logout">
+                <form action="{{ url_for('logout.show') }}" method="POST">
+                    {{ csrf_token() }} <!-- This adds the CSRF token directly -->
+                    <input type="submit" value="Logout" class="logout-button">
+                </form>
+            </div>
+        </div>
         <div class="container">
             <h1>Faces Database</h1>
             <table id="facesTable">

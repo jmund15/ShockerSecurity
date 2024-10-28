@@ -1,24 +1,21 @@
-import SQLiteConnect
 
 from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, flash
 from functools import wraps
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, current_user
 
-from flaskModels import conn, curs, User, LoginForm
-
-from SQLiteConnect import checkUser
+from flaskModels import User, LoginForm
+from SQLiteConnect import getIdFromEmail, getUserFromID, validateUser
 
 # app = Flask(__name__)
 # app.debug=True
 login = Blueprint('login', __name__, template_folder='../frontend')
-login_manager = LoginManager(login)
-#login_manager.login_view = "login"
-login_manager.init_app(login)
+login_manager = LoginManager()
+#login_manager.init_app(login)
 
 @login_manager.user_loader
-def load_user(form):
-   lu = checkUser(form.email.data, form.password.data)
+def load_user(user_id):
+   print('LOADING USER!!')
+   lu = getUserFromID(user_id)
    return lu
    # if lu is None:
    #    return None
@@ -28,18 +25,21 @@ def load_user(form):
 @login.route("/login", methods=['GET','POST'])
 def show():
   if current_user.is_authenticated:
-     return redirect(url_for('profile'))
+     print('user is LOGGED IN! redirecting to stream homepage')
+     return redirect(url_for('stream.show'))
   form = LoginForm()
   if form.validate_on_submit():
-     Us = load_user(form)
-     if Us is not None:
+     uid = getIdFromEmail(form.email.data)
+     Us = load_user(uid)
+     valUser = validateUser(form.email.data, form.password.data)
+     if valUser is not None:
         login_user(Us, remember=form.remember.data)
         Umail = list({form.email.data})[0].split('@')[0]
-        flash('Logged in successfully '+Umail)
-        redirect(url_for('stream.show'))
+        flash('Logged in successfully '+ Umail)
+        return redirect(url_for('stream.show'))
      else:
         flash('Login Unsuccessfull.')
-  return render_template('login.html',title='Login', form=form)
+  return render_template('login.html',title='ShockerSecurity Login', form=form)
   
 
 # Decorator for login required

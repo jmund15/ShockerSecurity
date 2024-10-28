@@ -7,20 +7,32 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>{{ title }}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        
+        <div class="navbar">
+            <div class="tabs">
+                <a href="{{ url_for('stream.show') }}" class="tab active">Live Stream</a>
+                <a href="{{ url_for('faces.get_faces') }}" class="tab">Faces Database</a>
+            </div>
+            <div class="logout">
+                <form action="{{ url_for('logout.show') }}" method="POST">
+                    {{ csrf_token() }} <!-- This adds the CSRF token directly -->
+                    <input type="submit" value="Logout" class="logout-button">
+                </form>
+            </div>
+        </div>
+
         <h1>Live Stream!!</h1>
 
         <div>
-            <img src="url_for('security_footage')" width="75%" alt="Video Stream not Available..."/>
+            <img src="url_for('stream.security_footage')" width="75%" alt="Video Stream not Available..."/>
         </div>
         <script src="" async defer></script>
     </body>
