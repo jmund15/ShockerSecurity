@@ -1,7 +1,7 @@
 
 from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, flash
 from functools import wraps
-from flask_login import LoginManager, UserMixin, login_required, login_user, current_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, current_user, logout_user
 
 from flaskModels import User, LoginForm
 from SQLiteConnect import getIdFromEmail, getUserFromID, validateUser
@@ -35,13 +35,20 @@ def show():
      if valUser is not None:
         login_user(Us, remember=form.remember.data)
         Umail = list({form.email.data})[0].split('@')[0]
-        flash('Logged in successfully '+ Umail)
+        #flash('Logged in successfully '+ Umail)
         return redirect(url_for('stream.show'))
      else:
         flash('Login Unsuccessfull.')
   return render_template('login.html',title='ShockerSecurity Login', form=form)
   
-
+@login.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    print('logging out user!')
+    print('Received CSRF token:', request.form.get('csrf_token'))
+    logout_user()
+    return redirect(url_for('login.show') + '?success=logged-out')
+ 
 # Decorator for login required
 def login_required(f):
     @wraps(f)

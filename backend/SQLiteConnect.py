@@ -26,7 +26,7 @@ def initialize_db():
     cipher = Fernet(key)
     
     #addUser('wiispeed03@gmail.com', 'testPassword')
-    #addFace('Jacob', True, "Jacob\image_6.jpg", 'testencodings')
+    addFace('Kyle', True, "Kyle\image_0.jpg", 'testencodings2')
     
         
 
@@ -110,7 +110,7 @@ def validateUser(email, password):
         return None
 def getAllFaces() -> list[Face]:
     statement = '''SELECT * FROM faces'''
-    faces = list[Face]
+    faces = []
     try:
         # Execute the statement
         curs.execute(statement)
@@ -118,9 +118,10 @@ def getAllFaces() -> list[Face]:
 
         # Create Face objects and append to the list
         for row in rows:
-            uid, name, accepted, encodings, blob = row
-            decryptedBlob = decryptData(blob)
-            face = Face(uid, name, accepted, encodings, decryptedBlob)
+            uid, name, accepted, imgPath, encodings  = row
+            print('face imgPath: ', imgPath)
+            #decryptedBlob = decryptData(blob)
+            face = Face(uid, name, accepted, encodings, imgPath)
             faces.append(face)
     except sqlite3.Error as e:
         print(f"'getAllFaces' ERROR: {e}")
@@ -140,28 +141,50 @@ def getAllFacesRaw() -> list[any]:
 def updateFace(id, name, accepted) -> bool: #face encodings and pictures won't be updated right?
     statement = '''UPDATE Faces SET name = ?, accepted = ? WHERE id = ?'''
     try:
-        # Execute the insert statement
-        curs.execute(statement, (id, name, accepted))
-        # Commit the transaction
+        # Execute the update statement and commit changes
+        curs.execute(statement, (name, accepted, id))
         conn.commit()
-        print("Face updated successfully.")
+        # Check if any rows were affected
+        if curs.rowcount > 0:
+            print("Face updated successfully.")
+        else:
+            print(f"No face found with id {id}.")
+            return False
         return True
     except sqlite3.Error as e:
         print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
         return False
 
-def addFace(name, accepted, pictureLoc, encodings):
-    statement = ''' INSERT INTO faces (name, accepted, picture, encodings) VALUES (?, ?, ?, ?)'''
+def addFace(name, accepted, imgPath, encodings):
+    statement = ''' INSERT INTO faces (name, accepted, imgPath, encodings) VALUES (?, ?, ?, ?)'''
 
-    empPhoto = convertToBinaryData(pictureLoc)
-    encryptedPhoto = encryptData(empPhoto)
-    # Hash the password before storing
+    #empPhoto = convertToBinaryData(pictureLoc)
+    #encryptedPhoto = encryptData(empPhoto)
     try:
         # Execute the insert statement
-        curs.execute(statement, (name, accepted, encryptedPhoto, encodings))
+        curs.execute(statement, (name, accepted, imgPath, encodings))
         # Commit the transaction
         conn.commit()
         print("Image and file inserted successfully as a BLOB into a table")
+        return True
+    except sqlite3.Error as e:
+        print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
+        return False
+    
+def deleteFace(uid):
+    # Prepare the DELETE statement
+    statement = '''DELETE FROM faces WHERE uid = ?'''
+    try:
+        # Execute the statement and commit changes
+        curs.execute(statement, (uid,))
+        conn.commit()
+        
+        # Check if any row was deleted
+        if curs.rowcount > 0:
+            print(f"Face with uid {uid} has been removed.")
+        else:
+            print(f"No face found with uid {uid}.")
+            return False
         return True
     except sqlite3.Error as e:
         print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")

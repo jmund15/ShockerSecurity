@@ -12,7 +12,7 @@ import time
 #import keyboard
 from flask import Flask, Blueprint
 from flask import render_template, url_for, flash, request, redirect, Response
-from flask_login import LoginManager, login_required, current_user
+from flask_login import LoginManager, login_required, current_user, logout_user
 
 import sqlite3
 import time
@@ -28,12 +28,13 @@ stream = Blueprint('stream', __name__, template_folder='../frontend')
 # app = Flask(__name__)
 # app.debug=True
 
-@stream.route('/stream', methods=['GET', 'POST'])
+@stream.route('/stream', methods=['GET'])
 @login_required
 def show():
-    print('STREAMING HTML LOAD!')
-    return render_template('stream.html',title='ShockerSecurity')
-    
+    #print('STREAMING HTML LOAD!')
+    return render_template('stream.html', title='ShockerSecurity')
+
+
 # @stream.route('/stream/security_footage')
 # @login_required  # Protect the video feed route
 # def stream_footage():

@@ -32,12 +32,20 @@ class User(UserMixin):
         return self.id
 
 class Face():
-     def __init__(self, id, name, accepted, encodings, picture):
-          self.id = id
-          self.name = name
-          self.accepted = accepted
-          self.encodings = encodings
-          self.picture = picture
+    def __init__(self, id, name, accepted, encodings, image_path):
+        self.id = id
+        self.name = name
+        self.accepted = accepted
+        self.encodings = encodings
+        self.image_path = image_path
+        
+    def to_dict(self):
+        return {
+            'id': self.id, 
+            'name': self.name,
+            'accepted': self.accepted,
+            'face': self.image_path  # Adjust if you need a different representation for the face
+        }
      
 class LoginForm(FlaskForm):
     email        = EmailField('Email Address', [

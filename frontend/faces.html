@@ -15,7 +15,7 @@
         <div class="navbar">
             <div class="tabs">
                 <a href="{{ url_for('stream.show') }}" class="tab">Live Stream</a>
-                <a href="{{ url_for('faces.get_faces') }}" class="tab active">Faces Database</a>
+                <a href="{{ url_for('faces.show') }}" class="tab active">Faces Database</a>
             </div>
             <div class="logout">
                 <form action="{{ url_for('logout.show') }}" method="POST">
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="container">
-            <h1>Faces Database</h1>
+            <h1>Security Management</h1>
             <table id="facesTable">
                 <thead>
                     <tr>
@@ -33,6 +33,7 @@
                         <th>Name</th>
                         <th>Accepted</th>
                         <th>Picture</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +42,9 @@
             </table>
             <button id="applyChangesButton">Apply Changes</button>
         </div>
-        <script src="manageFaces.js"></script>
+        <script>
+            const imageUrl = "{{ url_for('static', filename='faceImages/') }}";  // Define the image URL here
+        </script>
+        <script src="{{ url_for('static', filename='manageFaces.js') }}"></script>
     </body>
 </html>
