@@ -26,7 +26,8 @@ def initialize_db():
     cipher = Fernet(key)
     
     #addUser('wiispeed03@gmail.com', 'testPassword')
-    addFace('Kyle', True, "Kyle\image_0.jpg", 'testencodings2')
+    #addFace('Kyle', True, "Kyle\image_1.jpg", 'testencodings2')
+    #addFace('Lorant', True, "Lorant\image_0.jpg", 'testencodings3')
     
         
 
@@ -108,6 +109,7 @@ def validateUser(email, password):
     except sqlite3.Error as e:
         print(f"'checkUser' ERROR: {e}")
         return None
+    
 def getAllFaces() -> list[Face]:
     statement = '''SELECT * FROM faces'''
     faces = []
@@ -139,7 +141,7 @@ def getAllFacesRaw() -> list[any]:
     return faces
 
 def updateFace(id, name, accepted) -> bool: #face encodings and pictures won't be updated right?
-    statement = '''UPDATE Faces SET name = ?, accepted = ? WHERE id = ?'''
+    statement = '''UPDATE Faces SET name = ?, accepted = ? WHERE uid = ?'''
     try:
         # Execute the update statement and commit changes
         curs.execute(statement, (name, accepted, id))
@@ -172,6 +174,7 @@ def addFace(name, accepted, imgPath, encodings):
         return False
     
 def deleteFace(uid):
+    print('deleteFace called')
     # Prepare the DELETE statement
     statement = '''DELETE FROM faces WHERE uid = ?'''
     try:

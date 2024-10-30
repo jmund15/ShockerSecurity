@@ -10,6 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Faces Database</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <meta name="csrf-token" content="{{ csrf_token }}">
     </head>
     <body>
         <div class="navbar">
@@ -19,7 +20,7 @@
             </div>
             <div class="logout">
                 <form action="{{ url_for('logout.show') }}" method="POST">
-                    {{ csrf_token() }} <!-- This adds the CSRF token directly -->
+                    {{ form.hidden_tag() }}
                     <input type="submit" value="Logout" class="logout-button">
                 </form>
             </div>
@@ -33,17 +34,23 @@
                         <th>Name</th>
                         <th>Accepted</th>
                         <th>Picture</th>
-                        <th>Action</th>
+                        <th>ToggleDelete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Data will be populated here -->
                 </tbody>
             </table>
-            <button id="applyChangesButton">Apply Changes</button>
+            <form id="applyChangesButton" method="POST">
+                {{ form.hidden_tag() }}  <!-- CSRF token hidden field -->
+                <input type="submit" value="Apply Changes" class="apply-changes"> 
+            </form>
         </div>
         <script>
             const imageUrl = "{{ url_for('static', filename='faceImages/') }}";  // Define the image URL here
+            const faceDataUrl = "{{ url_for('faces.get_faces') }}";
+            const updateUrl = "{{ url_for('faces.update_face') }}";
+            const deleteUrl = "{{ url_for('faces.delete_face') }}";
         </script>
         <script src="{{ url_for('static', filename='manageFaces.js') }}"></script>
     </body>

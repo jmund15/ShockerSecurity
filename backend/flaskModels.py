@@ -75,3 +75,7 @@ class RegisterForm(FlaskForm):
         validators.EqualTo('password', message='Passwords must match'),
         validators.DataRequired()
     ])
+    
+class CSRFForm(FlaskForm):
+    class Meta:
+        csrf = True  # Enable CSRF protection

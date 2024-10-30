@@ -19,7 +19,7 @@ import time
 import numpy as np
 import cv2
 
-from flaskModels import User
+from flaskModels import CSRFForm
 from flaskLogin import login_manager
 
 stream = Blueprint('stream', __name__, template_folder='../frontend')
@@ -31,8 +31,9 @@ stream = Blueprint('stream', __name__, template_folder='../frontend')
 @stream.route('/stream', methods=['GET'])
 @login_required
 def show():
+    form = CSRFForm()
     #print('STREAMING HTML LOAD!')
-    return render_template('stream.html', title='ShockerSecurity')
+    return render_template('stream.html', title='ShockerSecurity', form=form)
 
 
 # @stream.route('/stream/security_footage')

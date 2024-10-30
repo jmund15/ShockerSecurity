@@ -12,14 +12,14 @@ from flaskRegister import register
 from flaskStream import stream
 from flaskManageFaces import faces
 
-from SQLiteConnect import initialize_db, getUserFromID
+from SQLiteConnect import initialize_db
 
 app = Flask(__name__, static_folder='../frontend/static')
 app.debug = True
 app.config['SECRET_KEY'] = 'secret_key'
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(seconds=100)#days=1)  # Optional: Set duration for remember cookie
 app.config['SESSION_COOKIE_SECURE'] = False
-CORS(app)  # Enable CORS for all routes
+CORS(app, supports_credentials=True)  # Enable CORS for all routes
 csrf = CSRFProtect(app) # Enable CSRF protection
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../database.db'

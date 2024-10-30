@@ -4,27 +4,18 @@ body {
 }
 
 .container {
-    max-width: 80%;
+    max-width: 85%;
     margin: auto;
 }
 
 table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
 tr {
     padding: 1rem; /* Add padding for more space */
-}
-
-tr.deleting {
-    opacity: 0.5;
-    text-decoration: line-through; /* Optional: visually indicate deletion */
-}
-/* Reset styles for the delete button within a deleting row */
-tr.deleting .deleteButton {
-    opacity: 1; /* Keep the button fully opaque */
-    text-decoration: none; /* No line-through */
 }
 
 th, td {
@@ -38,13 +29,14 @@ th {
     background-color: #f4f4f4;
 }
 
-/* td {
-    justify-content: center; 
-    align-items: center; 
-} */
+#facesTable td {
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis; /* Optional: show ellipsis for overflow text */
+    white-space: nowrap; /* Prevent text wrapping */
+}
 
 input[type="text"] {
-    width: 50%;
+    width: 80%;
     padding: 5px;
 }
 
@@ -53,8 +45,9 @@ input[type="checkbox"] {
 }
 
 #facesTable img {
-    min-width: 100%; /* Adjust this value as needed */
+    min-width: 80%; /* Adjust this value as needed */
     height: auto; /* Keep the aspect ratio */
+    border: 1px solid #1a1a1a;
     border-radius: 4px; /* Optional: add some rounded corners */
     object-fit: cover; /* Optional: cover the space while maintaining aspect ratio */
     /* min-height: 150%; Set a maximum height for images */
@@ -62,9 +55,11 @@ input[type="checkbox"] {
 
 /* Styling for the Delete button */
 .deleteButton {
+    opacity: 1 !important;
     background-color: #f44336; /* Red */
     color: white;
     border: none;
+    border-radius: 4px;
     padding: 10px 15px;
     text-align: center;
     text-decoration: none;
@@ -74,6 +69,15 @@ input[type="checkbox"] {
     margin-left: 10px; /* Space between buttons */
     transition: background-color 0.3s ease;
 }
+
+.deleting-row {
+    background-color: rgba(255, 99, 71, 0.2); /* Light Tomato Red Tint */
+}
+.deleting {
+    opacity: 0.25;
+    text-decoration: line-through; /* Optional: visually indicate deletion */
+}
+
 
 /* Disabled button styles
 .deleteButton:disabled {
@@ -89,10 +93,11 @@ input[type="checkbox"] {
 }
 
 /* Styling for the Apply Changes button */
-#applyChangesButton {
+.apply-changes {
     background-color: #4CAF50; /* Green */
     color: white;
     border: none;
+    border-radius: 4px;
     padding: 10px 15px;
     text-align: center;
     text-decoration: none;
@@ -104,7 +109,7 @@ input[type="checkbox"] {
 }
 
 /* Disabled button styles */
-#applyChangesButton:disabled {
+.apply-changes:disabled {
     background-color: #ccc; /* Light grey */
     color: #666; /* Darker grey text */
     cursor: not-allowed; /* Not allowed cursor */
@@ -112,7 +117,7 @@ input[type="checkbox"] {
 }
 
 /* Button hover effects */
-#applyChangesButton:hover:not(:disabled) {
+.apply-changes:hover:not(:disabled) {
     background-color: #45a049; /* Darker green on hover */
 }
 
