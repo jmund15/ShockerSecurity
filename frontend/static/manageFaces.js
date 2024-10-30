@@ -4,15 +4,39 @@
 
 let data = []; // Declare data as a global variable
 let facesToDelete = []; // Array to store IDs of faces marked for deletion
-let applyChangeButton;
+let applyChangesButton; // This is now the submit button
+let applyChangesForm;
 let csrfToken;
+let hasChanges;
 
 document.addEventListener('DOMContentLoaded', () => {
     csrfToken = document.querySelector('input[name="csrf_token"]').value;
     console.log(csrfToken);
-    applyChangeButton = document.getElementById('applyChangesButton');
-    applyChangeButton.addEventListener('submit', updateAllFaces);
-    
+    applyChangesForm = document.getElementById('applyChangesForm');
+    applyChangesButton = document.getElementById('applyChangesButton'); // This is now the submit button
+    applyChangesForm.addEventListener('submit', function(event) {
+        // Show a confirmation dialog
+        const discardChanges = confirm("Are you sure you want to apply these changes?");
+        if (discardChanges) {
+            // If the user confirmed, call the updateAllFaces function
+            updateAllFaces(event);
+        } else {
+            // If the user canceled, prevent the form submission
+            event.preventDefault();
+        }
+    });
+
+    // Confirmation when leaving the page
+    window.addEventListener('beforeunload', (event) => {
+        if (hasChanges) {
+            const confirmationMessage = "You have unsaved changes. Are you sure you want to leave?";
+            event.preventDefault(); // This line is needed for some browsers
+            return confirmationMessage; // if user canceled, won't exit page
+        }
+    });
+    console.log("Loading inital data...");
+    // Load initial data
+    fetchFacesData();
 });
 
 // Fetch data from the SQLite database
@@ -30,11 +54,16 @@ function loadTableData(facesData) {
 
     data.forEach(face => {
         const row = document.createElement('tr');
-
+        // <td><input type="checkbox" ${face.accepted ? 'checked' : ''} data-id="${face.id}"></td>
         row.innerHTML = `
             <td>${face.id}</td>
             <td><input type="text" value="${face.name}" data-id="${face.id}"></td>
-            <td><input type="checkbox" ${face.accepted ? 'checked' : ''} data-id="${face.id}"></td>
+            <td>
+                <label class="checkbox-container">
+                    <input type="checkbox" ${face.accepted ? 'checked' : ''} data-id="${face.id}">
+                    <span class="checkmark"></span> <!-- Optional: for styling purposes -->
+                </label>
+            </td>
             <td><img src="${imageUrl + face.face}" alt="${face.name}" style="width: 50px; height: auto;"></td>
             <td><button class="deleteButton" data-id="${face.id}">Toggle Delete</button></td>`
         ;
@@ -53,21 +82,23 @@ function loadTableData(facesData) {
 
 function applyButtonCheck() {
     if (facesToDelete.length != 0) {
-        applyChangeButton.disabled = false;
+        applyChangesButton.disabled = false;
     }
     else {
         const rows = document.querySelectorAll('#facesTable tbody tr');
-        const hasChanges = Array.from(rows).some(row => {
+        hasChanges = Array.from(rows).some(row => {
             const id = row.querySelector('input[data-id]').dataset.id;
             const name = row.querySelector('input[type="text"]').value;
             const accepted = row.querySelector('input[type="checkbox"]').checked;
     
             const originalFace = data.find(face => face.id == id); // Use the original data
-            //console.log ("original name: " + originalFace.name + "- curr name: " + name);
-            //console.log ("original accepted: " + originalFace.accepted + "- curr accepted: " + accepted);
-            return originalFace.name !== name || !!originalFace.accepted !== !!accepted;
+            console.log ("original name: " + originalFace.name + "- curr name: " + name);
+            console.log ("original accepted: " + originalFace.accepted + "- curr accepted: " + accepted);
+            changesBool = originalFace.name != name || originalFace.accepted != accepted;
+            console.log("changes made? : ", changesBool);
+            return changesBool;
         });
-        applyChangeButton.disabled = !hasChanges;
+        applyChangesButton.disabled = !hasChanges;
     }
     
 }
@@ -82,6 +113,7 @@ function markForDeletion(id) {
         row.querySelector('input[type="checkbox"]').classList.add('deleting');
         row.querySelector('img').classList.add('deleting');
         row.classList.add('deleting-row'); // Add class for greying out
+        row.querySelector('button').textContent = "Toggle Undelete";
     } else {
         facesToDelete = facesToDelete.filter(faceId => faceId !== id);
         row.querySelector('input[data-id]').classList.remove('deleting');
@@ -89,6 +121,7 @@ function markForDeletion(id) {
         row.querySelector('input[type="checkbox"]').classList.remove('deleting');
         row.querySelector('img').classList.remove('deleting');
         row.classList.remove('deleting-row'); // Remove class to restore
+        row.querySelector('button').textContent = "Toggle Delete";
     }
     //console.log(`Face ID ${id} toggled deletion.`);
 }
@@ -115,13 +148,12 @@ function markForDeletion(id) {
 //     .catch(error => console.error('Error updating data:', error));
 // }
 
-function updateAllFaces(event) {
+async function updateAllFaces(event) {
     event.preventDefault();
 
     const rows = document.querySelectorAll('#facesTable tbody tr');
-    const promises = []; // Array to hold promises for concurrent execution
 
-    rows.forEach(row => {
+    for (const row of rows) {
         const id = row.querySelector('input[data-id]').dataset.id;
         const name = row.querySelector('input[type="text"]').value;
         const accepted = row.querySelector('input[type="checkbox"]').checked;
@@ -131,7 +163,7 @@ function updateAllFaces(event) {
         if (facesToDelete.includes(parseInt(id))) {
             const deleteData = { id: parseInt(id) };
             console.log(JSON.stringify(deleteData)); // Log the delete request body
-            const deletePromise = fetch(deleteUrl, {
+            await fetch(deleteUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -139,14 +171,11 @@ function updateAllFaces(event) {
                 },
                 body: JSON.stringify(deleteData),
             });
-
-            promises.push(deletePromise);
-        }
-        else {
+        } else {
             // Update face data
             const updateData = { id: parseInt(id), name, accepted };
-            console.log(JSON.stringify(updateData)); // Log the delete request body
-            const updatePromise = fetch(updateUrl, {
+            console.log(JSON.stringify(updateData)); // Log the update request body
+            await fetch(updateUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -154,21 +183,11 @@ function updateAllFaces(event) {
                 },
                 body: JSON.stringify(updateData),
             });
-            promises.push(updatePromise);
         }
-    });
+    }
 
-    // Execute all promises
-    Promise.all(promises)
-        .then(results => {
-            console.log(results);
-            alert('All faces updated and deletions processed!');
-            fetchFacesData(); // Refresh the table
-            facesToDelete = []; // Clear the deletion array
-        })
-        .catch(error => console.error('Error updating or deleting data:', error));
+    fetchFacesData(); // Refresh the table
+    facesToDelete = []; // Clear the deletion array
+    //alert('All face updates and deletions processed!');
 }
 
-console.log("Loading inital data...");
-// Load initial data
-fetchFacesData();

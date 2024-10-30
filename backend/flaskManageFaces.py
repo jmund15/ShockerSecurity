@@ -32,7 +32,7 @@ def get_faces():
 @faces.route('/faces/update', methods=['POST'])
 @login_required
 def update_face():
-    print('updating face')
+    print('update_face called!')
     data = request.json
     id = data['id']
     name = data['name']
@@ -45,7 +45,7 @@ def update_face():
 @faces.route('/faces/delete', methods=['POST'])
 @login_required
 def delete_face():
-    print('deleting face')
+    print('delete_face called!')
     data = request.json
     id = data['id']
     if (deleteFace(id)):

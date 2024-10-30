@@ -3,6 +3,7 @@ import os
 import inspect
 from cryptography.fernet import Fernet
 from werkzeug.security import generate_password_hash, check_password_hash
+#from face_recognition import compare_faces
 
 from flaskModels import User, Face
 
@@ -28,7 +29,7 @@ def initialize_db():
     #addUser('wiispeed03@gmail.com', 'testPassword')
     #addFace('Kyle', True, "Kyle\image_1.jpg", 'testencodings2')
     #addFace('Lorant', True, "Lorant\image_0.jpg", 'testencodings3')
-    
+    #addFace('Tina', True, "Tina\image_1.jpg", 'testencodings4')
         
 
 
@@ -139,6 +140,28 @@ def getAllFacesRaw() -> list[any]:
     except sqlite3.Error as e:
         print(f"'getAllFaces' ERROR: {e}")
     return faces
+
+def matchEncodings(matchEncoding):
+    old_statement = '''SELECT name FROM faces WHERE encodings = ?'''
+    statement = '''SELECT encodings FROM faces'''
+    try:
+        curs.execute(statement)
+        encodings = curs.fetchall()
+        # for encoding in encodings:
+        #     matches = face_recognition.compare_faces(encoding,
+        #         matchEncoding)
+        #     # check to see if we have found a match
+        #     if True in matches:
+        #         name_statement = '''SELECT name FROM faces WHERE encodings = ?'''
+        #         curs.execute(name_statement, (encoding,))
+        #         result = curs.fetchone()
+        #         if result:
+        #             return matches, result[0]  # (uid, email, password)
+        #         else:
+        #             return None #'Unknown Error!' # should be impossible 
+    except sqlite3.Error as e:
+        print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
+        return None
 
 def updateFace(id, name, accepted) -> bool: #face encodings and pictures won't be updated right?
     statement = '''UPDATE Faces SET name = ?, accepted = ? WHERE uid = ?'''

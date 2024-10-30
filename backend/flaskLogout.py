@@ -9,7 +9,7 @@ logout = Blueprint('logout', __name__, template_folder='../frontend')
 #login_manager = LoginManager()
 #login_manager.init_app(logout)
 
-@logout.route('/logout', methods=['GET'])
+@logout.route('/logout', methods=['POST'])
 @login_required
 def show():
     #form = Form()

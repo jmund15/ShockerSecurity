@@ -3,7 +3,7 @@
 # import the necessary packages
 #from picamera2 import Picamera2, MappedArray, Preview
 import numpy as np
-#from imutils import paths
+from imutils import paths
 import os
 #import face_recognition
 #import imutils
@@ -21,12 +21,43 @@ import cv2
 
 from flaskModels import CSRFForm
 from flaskLogin import login_manager
+from SQLiteConnect import matchEncodings, addFace
 
 stream = Blueprint('stream', __name__, template_folder='../frontend')
 #login_manager = LoginManager()
 #login_manager.init_app(stream)
 # app = Flask(__name__)
 # app.debug=True
+
+face_dir = '../frontend/static'
+boxes = []
+encodings = []
+names = []
+unknown_num = len(list(paths.list_images(face_dir))) + 1 #TODO: FIX!
+print("unknown num: {}".format(unknown_num))
+#Initialize 'currentname' to trigger only when a new person is identified.
+currentname = "Unknown"
+
+# def init_video():
+#     data = load_known_face_encodings()
+
+#     boxes = []
+#     encodings = []
+#     names = []
+#     unknown_num = len(list(paths.list_images(unknown_dir))) + 1
+#     print("unknown num: {}".format(unknown_num))
+#     #Initialize 'currentname' to trigger only when a new person is identified.
+#     currentname = "Unknown"
+
+#     picam2 = Picamera2()
+#     picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
+#     picam2.start_preview(Preview.QTGL, width=1280, height=960)
+#     dest_dir = "MemberVideo"
+#     #picam2.start_and_record_video("memberVideo.mp4", duration=5)
+
+#     (w0, h0) = picam2.stream_configuration("main")["size"] 
+#     #(w1, h1) = picam2.stream_configuration("lores")["size"]
+
 
 @stream.route('/stream', methods=['GET'])
 @login_required
@@ -52,18 +83,11 @@ def show():
 #         if fn.endswith('.pickle'):
 #             path = os.path.join(known_dir, fn)
 #             face = pickle.loads(open(path, "rb").read())
-#             #print(face)
 #             for key, value in face.items():
 #                 if key in data:
 #                     data[key].extend(value)
 #                 else:
 #                     data[key] = value
-#             #data.update(face)
-#             print(data)
-#     #print(data)        
-#     #encodingsP = known_dir + "/encodings.pickle"
-#     if (not os.path.isdir(unknown_dir)):
-#         os.mkdir(unknown_dir)
 #     return data
 
 
@@ -84,12 +108,15 @@ def show():
 #             #	encoding)
 #             # attempt to match each face in the input image to our known
 #             # encodings
-#             matches = face_recognition.compare_faces(data["encodings"],
-#                 encoding)
-#             name = "Unknown" #if face is not recognized, then print Unknown
-
-#             # check to see if we have found a match
-#             if True in matches:
+            
+#             matches, name = matchEncodings(encoding)
+#             if matches is None:
+#                 #TODO: UNKNOWN TIMER
+#                 print("unknown face detected! Send picture to user!")
+#                 print("unknown num: {}".format(unknown_num))
+#                 cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
+#                 unknown_num += 1
+#             else:
 #                 # find the indexes of all matched faces then initialize a
 #                 # dictionary to count the total number of times each face
 #                 # was matched
@@ -113,11 +140,6 @@ def show():
 #                 #	print(currentname)
 #                 #else:
 #                 #	currentname = "Unknown"
-#             else:
-#                 print("unknown face detected! Send picture to user!")
-#                 print("unknown num: {}".format(unknown_num))
-#                 cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
-#                 unknown_num += 1
 #             # update the list of names
 #             names.append(name)
 
@@ -176,33 +198,5 @@ def show():
 #     picam2.stop_preview()
 #     picam2.stop()
 
-# if __name__=="__main__":
-
-#     known_dir = "KnownFaces"
-#     unknown_dir = "UnknownFaces"
-
-#     data = load_known_face_encodings()
-
-#     boxes = []
-#     encodings = []
-#     names = []
-#     unknown_num = len(list(paths.list_images(unknown_dir))) + 1
-#     print("unknown num: {}".format(unknown_num))
-#     #Initialize 'currentname' to trigger only when a new person is identified.
-#     currentname = "Unknown"
-
-#     picam2 = Picamera2()
-#     picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
-#     picam2.start_preview(Preview.QTGL, width=1280, height=960)
-#     dest_dir = "MemberVideo"
-#     #picam2.start_and_record_video("memberVideo.mp4", duration=5)
-
-#     (w0, h0) = picam2.stream_configuration("main")["size"] 
-#     #(w1, h1) = picam2.stream_configuration("lores")["size"]
-
-#     #cv2.namedWindow("Facial Detection", cv2.WINDOW_NORMAL)
-#     #cv2.resizeWindow("Facial Detection", 1200, 800)
-
-
-#     # app.run(debug=True)
+    
 

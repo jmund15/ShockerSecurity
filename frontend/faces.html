@@ -34,16 +34,16 @@
                         <th>Name</th>
                         <th>Accepted</th>
                         <th>Picture</th>
-                        <th>ToggleDelete</th>
+                        <th>Toggle Deletion</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Data will be populated here -->
                 </tbody>
             </table>
-            <form id="applyChangesButton" method="POST">
+            <form id="applyChangesForm" method="POST">
                 {{ form.hidden_tag() }}  <!-- CSRF token hidden field -->
-                <input type="submit" value="Apply Changes" class="apply-changes"> 
+                <input type="submit" value="Apply Changes" class="apply-changes" id="applyChangesButton"> 
             </form>
         </div>
         <script>
