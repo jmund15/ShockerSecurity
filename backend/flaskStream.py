@@ -19,9 +19,9 @@ import time
 import numpy as np
 import cv2
 
-from flaskModels import CSRFForm
+from flaskModels import Face, CSRFForm
 from flaskLogin import login_manager
-from SQLiteConnect import matchEncodings, addFace
+from SQLiteConnect import matchEncodings, addFace, getAllFaces
 
 stream = Blueprint('stream', __name__, template_folder='../frontend')
 #login_manager = LoginManager()
@@ -30,6 +30,7 @@ stream = Blueprint('stream', __name__, template_folder='../frontend')
 # app.debug=True
 
 face_dir = '../frontend/static'
+faces: list[Face] = []
 boxes = []
 encodings = []
 names = []
@@ -72,88 +73,79 @@ def show():
 # def stream_footage():
 # 	return Response(get_footage(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# def load_known_face_encodings():
-#     # load the known faces and embeddings
-#     print("[INFO] loading encodings + face detector...")
-#     #Determine faces from encodings.pickle file model created from train_model.py
-    
-#     #faces_data = []
-#     data = {}
-#     for fn in os.listdir(known_dir):
-#         if fn.endswith('.pickle'):
-#             path = os.path.join(known_dir, fn)
-#             face = pickle.loads(open(path, "rb").read())
-#             for key, value in face.items():
-#                 if key in data:
-#                     data[key].extend(value)
-#                 else:
-#                     data[key] = value
-#     return data
+def load_face_encodings():
+    faces = getAllFaces()
+    # for face in faces:
+    #     #TODO: Loop through encodings?
+    #     if face.encodings in faces:
+    #         pass
+    #         #data[face.encodings].extend(face.name)
+    #     else:
+    #         faces[face.encodings] = face.name
+    # # load the known faces and embeddings
+    # print("[INFO] loading encodings + face detector...")
+    return faces
 
 
-# def draw_faces(request):
-#     global data
-#     global names
-#     global encodings
-#     global boxes
-#     global unknown_num
+def draw_faces(request):
+    global faces
+    global names
+    global encodings
+    global boxes
+    global unknown_num
 
-#     with MappedArray(request, "main") as m:
-#         # loop over the facial embeddings
-#         for encoding in encodings:
+    with MappedArray(request, "main") as m:
+        # loop over the facial embeddings
+        for encoding in encodings:
             
-#             #matches = []
-#             #for data in faces_data:
-#             #    matches += face_recognition.compare_faces(data["encodings"],
-#             #	encoding)
-#             # attempt to match each face in the input image to our known
-#             # encodings
+            for face in faces:
+                matches = face_recognition.compare_faces(face.encodings,
+				encoding)
+            matches, name = matchEncodings(encoding)
+            if matches is None:
+                #TODO: UNKNOWN TIMER
+                print("unknown face detected! Send picture to user!")
+                print("unknown num: {}".format(unknown_num))
+                cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
+                unknown_num += 1
+            else:
+                # find the indexes of all matched faces then initialize a
+                # dictionary to count the total number of times each face
+                # was matched
+                matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+                counts = {}
+
+                # loop over the matched indexes and maintain a count for
+                # each recognized face face
+                for i in matchedIdxs:
+                    name = data["names"][i]
+                    counts[name] = counts.get(name, 0) + 1
+
+                # determine the recognized face with the largest number
+                # of votes (note: in the event of an unlikely tie Python
+                # will select first entry in the dictionary)
+                name = max(counts, key=counts.get)
+
+                #If someone in your dataset is identified, print their name on the screen
+                #if currentname != name:
+                #	currentname = name
+                #	print(currentname)
+                #else:
+                #	currentname = "Unknown"
+            # update the list of names
+            names.append(name)
+
+        # loop over the recognized faces
+        for ((top, right, bottom, left), name) in zip(boxes, names):
+            # (x, y, w, h) = [c * n // d for c, n, d in zip(f, (w0, h0) * 2, (w1, h1) * 2)]            
+            # cv2.rectangle(m.array, (x, y), (x + w, y + h), (0, 255, 0, 0))
             
-#             matches, name = matchEncodings(encoding)
-#             if matches is None:
-#                 #TODO: UNKNOWN TIMER
-#                 print("unknown face detected! Send picture to user!")
-#                 print("unknown num: {}".format(unknown_num))
-#                 cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
-#                 unknown_num += 1
-#             else:
-#                 # find the indexes of all matched faces then initialize a
-#                 # dictionary to count the total number of times each face
-#                 # was matched
-#                 matchedIdxs = [i for (i, b) in enumerate(matches) if b]
-#                 counts = {}
-
-#                 # loop over the matched indexes and maintain a count for
-#                 # each recognized face face
-#                 for i in matchedIdxs:
-#                     name = data["names"][i]
-#                     counts[name] = counts.get(name, 0) + 1
-
-#                 # determine the recognized face with the largest number
-#                 # of votes (note: in the event of an unlikely tie Python
-#                 # will select first entry in the dictionary)
-#                 name = max(counts, key=counts.get)
-
-#                 #If someone in your dataset is identified, print their name on the screen
-#                 #if currentname != name:
-#                 #	currentname = name
-#                 #	print(currentname)
-#                 #else:
-#                 #	currentname = "Unknown"
-#             # update the list of names
-#             names.append(name)
-
-#         # loop over the recognized faces
-#         for ((top, right, bottom, left), name) in zip(boxes, names):
-#             # (x, y, w, h) = [c * n // d for c, n, d in zip(f, (w0, h0) * 2, (w1, h1) * 2)]            
-#             # cv2.rectangle(m.array, (x, y), (x + w, y + h), (0, 255, 0, 0))
-            
-#             # draw the predicted face name on the image - color is in BGR
-#             cv2.rectangle(m.array, (left, top), (right, bottom),
-#                 (0, 255, 225), 0)
-#             y = top - 15 if top - 15 > 15 else top + 15
-#             cv2.putText(m.array, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
-#                 .8, (0, 255, 255), 0)
+            # draw the predicted face name on the image - color is in BGR
+            cv2.rectangle(m.array, (left, top), (right, bottom),
+                (0, 255, 225), 0)
+            y = top - 15 if top - 15 > 15 else top + 15
+            cv2.putText(m.array, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
+                .8, (0, 255, 255), 0)
 				
 # def get_footage():
 #     global boxes
