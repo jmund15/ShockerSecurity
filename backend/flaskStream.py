@@ -19,9 +19,9 @@ import time
 import numpy as np
 import cv2
 
-from flaskModels import CSRFForm
+from flaskModels import Face, CSRFForm
 from flaskLogin import login_manager
-from SQLiteConnect import matchEncodings, addFace
+from SQLiteConnect import matchEncodings, addFace, getAllFaces
 
 stream = Blueprint('stream', __name__, template_folder='../frontend')
 #login_manager = LoginManager()
@@ -29,7 +29,11 @@ stream = Blueprint('stream', __name__, template_folder='../frontend')
 # app = Flask(__name__)
 # app.debug=True
 
-face_dir = '../frontend/static'
+face_dir = 'frontend/static'
+dictEncodingStr = "encodings"
+dictNamesStr = "names"
+encodingDict = {dictEncodingStr: [], dictNamesStr: []}
+faces: list[Face] = []
 boxes = []
 encodings = []
 names = []
@@ -72,27 +76,28 @@ def show():
 # def stream_footage():
 # 	return Response(get_footage(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# def load_known_face_encodings():
-#     # load the known faces and embeddings
-#     print("[INFO] loading encodings + face detector...")
-#     #Determine faces from encodings.pickle file model created from train_model.py
-    
-#     #faces_data = []
-#     data = {}
-#     for fn in os.listdir(known_dir):
-#         if fn.endswith('.pickle'):
-#             path = os.path.join(known_dir, fn)
-#             face = pickle.loads(open(path, "rb").read())
-#             for key, value in face.items():
-#                 if key in data:
-#                     data[key].extend(value)
-#                 else:
-#                     data[key] = value
-#     return data
+def load_face_encodings():
+    global encodingDict
+    faces = getAllFaces()
+    encodingDict = {dictEncodingStr: [], dictNamesStr: []}
+    for face in faces:
+        encodingDict[dictEncodingStr].append(face.encodings)
+        encodingDict[dictNamesStr].append(face.name)
+    #return encodingDict
+
+    # for face in faces:
+    #     #TODO: Loop through encodings?
+    #     if face.encodings in faces:
+    #         pass
+    #         #data[face.encodings].extend(face.name)
+    #     else:
+    #         faces[face.encodings] = face.name
+    # # load the known faces and embeddings
+    # print("[INFO] loading encodings + face detector...")
 
 
 # def draw_faces(request):
-#     global data
+#     global faces
 #     global names
 #     global encodings
 #     global boxes
@@ -101,21 +106,15 @@ def show():
 #     with MappedArray(request, "main") as m:
 #         # loop over the facial embeddings
 #         for encoding in encodings:
-            
-#             #matches = []
-#             #for data in faces_data:
-#             #    matches += face_recognition.compare_faces(data["encodings"],
-#             #	encoding)
-#             # attempt to match each face in the input image to our known
-#             # encodings
-            
-#             matches, name = matchEncodings(encoding)
+#             matches = face_recognition.compare_faces(encodingDict[dictEncodingStr], encoding)
 #             if matches is None:
 #                 #TODO: UNKNOWN TIMER
+#                 cv2.imwrite("{0}/unknown_{1}.jpg".format(face_dir, unknown_num), rgb)
+#                 addFace('unknown', False, '', encoding)
 #                 print("unknown face detected! Send picture to user!")
 #                 print("unknown num: {}".format(unknown_num))
-#                 cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
 #                 unknown_num += 1
+#                 load_face_encodings() #added new face so reload encodings
 #             else:
 #                 # find the indexes of all matched faces then initialize a
 #                 # dictionary to count the total number of times each face
@@ -126,7 +125,7 @@ def show():
 #                 # loop over the matched indexes and maintain a count for
 #                 # each recognized face face
 #                 for i in matchedIdxs:
-#                     name = data["names"][i]
+#                     name = encodingDict[dictNamesStr][i]
 #                     counts[name] = counts.get(name, 0) + 1
 
 #                 # determine the recognized face with the largest number
