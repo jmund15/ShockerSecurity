@@ -31,8 +31,6 @@ def initialize_db():
     #addFace('Lorant', True, "Lorant\image_0.jpg", 'testencodings3')
     #addFace('Tina', True, "Tina\image_1.jpg", 'testencodings4')
         
-
-
 def convertToBinaryData(filename):
     with open(filename, 'rb') as file:
         blobData = file.read()
@@ -215,7 +213,21 @@ def deleteFace(uid):
     except sqlite3.Error as e:
         print(f"{inspect.currentframe().f_code.co_name} ERROR: {e}")
         return False
-    
+
+def getAllEmails() -> list[str]:
+    statement = '''SELECT email FROM users'''
+    emails = []
+    try:
+        # Execute the statement
+        curs.execute(statement)
+        rows = curs.fetchall()
+
+        # Extract emails and add them to the list
+        emails = [row[0] for row in rows]
+    except sqlite3.Error as e:
+        print(f"'getAllEmails' ERROR: {e}")
+    return emails
+
 def insertBLOB(name, photo):
     try:
         sqliteConnection = sqlite3.connect(DATABASE)
