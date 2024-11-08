@@ -9,7 +9,7 @@ from flaskIndex import index
 from flaskLogin import login, login_manager
 from flaskLogout import logout
 from flaskRegister import register
-from flaskStream import stream
+from flaskStream import stream, init_video
 from flaskManageFaces import faces
 
 from SQLiteConnect import initialize_db
@@ -38,4 +38,5 @@ app.register_blueprint(faces)
    
 if __name__ == '__main__':
     initialize_db()
+    init_video()
     app.run(host='0.0.0.0', port=3000)

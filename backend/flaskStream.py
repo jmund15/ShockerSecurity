@@ -5,7 +5,6 @@ from picamera2 import Picamera2, MappedArray, Preview
 import numpy as np
 from imutils import paths
 import os
-import threading
 import face_recognition
 import imutils
 import time 
@@ -16,41 +15,38 @@ import time
 import numpy as np
 import cv2
 
-from flaskModels import Face, CSRFForm
+from flaskModels import Face, CSRFForm, StreamTimer
 from SQLiteConnect import addFace, getAllFaces
 
 stream = Blueprint('stream', __name__, template_folder='../frontend')
 
-face_dir = 'frontend/static'
+picam2 = None
+face_dir = 'frontend/static/faceImages'
+unknown_dir = 'frontend/static/faceImages/Unknown'
 dictEncodingStr = "encodings"
 dictNamesStr = "names"
 encoding_dict = {dictEncodingStr: [], dictNamesStr: []}
-unknown_dict: dict[list, threading.Timer] = {}
-UNKNOWN_ALERT_TIME = 2.0
+unknown_dict: dict[list, StreamTimer] = {}
+unknown_num = 0
+UNKNOWN_BUFFER_TIME = 2.0
+UNKNOWN_DETECTIONS_ALLOWED = 2
 faces: list[Face] = []
 boxes = []
 encodings = []
 names = []
-unknown_num = len(list(paths.list_images(face_dir))) + 1 #TODO: FIX!
-print("unknown num: {}".format(unknown_num))
 rgb = None
 face_annotations = None
 
 def init_video():
+    global picam2, unknown_num
     load_face_encodings()
-
-    boxes = []
-    encodings = []
-    names = []
     unknown_num = len(list(paths.list_images(unknown_dir))) + 1
     print("unknown num: {}".format(unknown_num))
-    #Initialize 'currentname' to trigger only when a new person is identified.
-    currentname = "Unknown"
 
     picam2 = Picamera2()
     picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
     picam2.start_preview(Preview.QTGL, width=1280, height=960)
-    dest_dir = "MemberVideo"
+    #dest_dir = "MemberVideo"
     #picam2.start_and_record_video("memberVideo.mp4", duration=5)
 
     (w0, h0) = picam2.stream_configuration("main")["size"] 
@@ -85,14 +81,26 @@ def draw_faces(request):
     with MappedArray(request, "main") as m:
         # Clear the annotated_frame and start fresh
         face_annotations = np.zeros_like(m.array)  # Black frame with same size as original
-        
+        name = ''
         # loop over the facial embeddings
         for encoding in encodings:
             matches = face_recognition.compare_faces(encoding_dict[dictEncodingStr], encoding)
             if matches is None:
-                if encoding not in unknown_dict:
-                    unknown_dict[encoding] = threading.Timer(UNKNOWN_ALERT_TIME, check_unknown_alert, args=[encoding])
+                # No matches found; we now need to compare against unknown_dict
+                found_similar = False
+                # Check against the existing encodings in unknown_dict
+                for unknown_encoding in unknown_dict.keys():
+                    if face_recognition.compare_faces([unknown_encoding], encoding)[0]:
+                        found_similar = True
+                        unknown_dict[unknown_encoding].iterate_detected()
+                        if unknown_dict[unknown_encoding].get_times_detected() > UNKNOWN_DETECTIONS_ALLOWED or unknown_dict[unknown_encoding].time_left < 0.5:
+                            check_unknown_alert(unknown_encoding)
+                        break
+                if not found_similar:
+                    unknown_dict[encoding] = StreamTimer(UNKNOWN_BUFFER_TIME, check_unknown_alert, args=[encoding])
+                    unknown_dict[encoding].iterate_detected()
                     unknown_dict[encoding].start()
+                name = 'Unknown!'
             else:
                 # find the indexes of all matched faces then initialize a
                 # dictionary to count the total number of times each face
@@ -118,28 +126,36 @@ def draw_faces(request):
             # (x, y, w, h) = [c * n // d for c, n, d in zip(f, (w0, h0) * 2, (w1, h1) * 2)]            
             # cv2.rectangle(m.array, (x, y), (x + w, y + h), (0, 255, 0, 0))
             
-            # draw the predicted face name on the image - color is in BGR
+            # draw the predicted face box on the image - color is in BGR
             cv2.rectangle(face_annotations, (left, top), (right, bottom), (0, 255, 225), 0)
+            # draw the predicted face name on the image - color is in BGR
             y = top - 15 if top - 15 > 15 else top + 15
             cv2.putText(face_annotations, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 0)
 				
 def check_unknown_alert(unknown_encoding):
-    global encodings
-    has_unknown = False
-    for encoding in encodings:
-        matches = face_recognition.compare_faces(unknown_encoding, encoding)
-        if any(matches):  # checks if there are matches
-            has_unknown = True
-            break
-    if has_unknown:
-        cv2.imwrite("{0}/unknown_{1}.jpg".format(face_dir, unknown_num), rgb)
+    global unknown_dict, unknown_num
+    if unknown_dict[unknown_encoding].time_left() != 0: #add to db bc alerted before timer ending
+        unknown_dict[unknown_encoding].cancel()
+        cv2.imwrite("{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num), rgb)
         addFace('Unknown', False, '', unknown_encoding)
         print("unknown face detected! Send picture to user!")
         print("unknown num: {}".format(unknown_num))
         unknown_num += 1
         load_face_encodings() #added new face so reload encodings
-    # else false alarm
+    #else: #timer finished before registering
+    
+    # either way remove from dict
     unknown_dict.pop(unknown_encoding)
+    
+    # has_unknown = False
+    # for encoding in encodings:
+    #     matches = face_recognition.compare_faces(unknown_encoding, encoding)
+    #     if any(matches):  # checks if there are matches
+    #         has_unknown = True
+    #         break
+    # if has_unknown:
+        
+    
         
         
             
@@ -147,7 +163,6 @@ def get_footage():
     global boxes
     global names
     global encodings
-    global unknown_num
     global rgb
     
     picam2.post_callback = draw_faces

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from functools import wraps
-import sqlite3
+import threading, time
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -79,3 +79,26 @@ class RegisterForm(FlaskForm):
 class CSRFForm(FlaskForm):
     class Meta:
         csrf = True  # Enable CSRF protection
+
+
+class StreamTimer(threading.Timer):
+    def __init__(self, interval, function, args=None, kwargs=None):
+        super().__init__(interval, function, args, kwargs)
+        self._start_time = None
+        self._interval = interval
+        self.__times_detected = 0  # Double underscore makes it "private"
+
+    def start(self):
+        self._start_time = time.time()
+        super().start()
+
+    def time_left(self):
+        if self._start_time is None:
+            return self._interval  # Timer has not started yet
+        elapsed = time.time() - self._start_time
+        return max(0, self._interval - elapsed)
+    
+    def iterate_detected(self):
+        self.__times_detected += 1
+    def get_times_detected(self) -> int: 
+        return self.__times_detected
