@@ -30,11 +30,13 @@
             </div>
         </div>
 
-        <h1>Live Stream!!</h1>
-
-        <div>
-            <img src="{{ url_for('stream.stream_footage') }}" width="75%" alt="Video Stream not Available..."/>
+        <div class="stream">
+            <h1>Live Stream</h1>
+            <div class="video-container">
+                <img src="{{ url_for('stream.stream_footage') }}" alt="Video Stream not Available..."/>
+            </div>
         </div>
+
         <script src="" async defer></script>
     </body>
 </html>

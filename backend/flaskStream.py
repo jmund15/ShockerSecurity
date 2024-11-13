@@ -36,21 +36,7 @@ encodings = []
 names = []
 rgb = None
 face_annotations = None
-
-def init_video():
-    global picam2, unknown_num
-    load_face_encodings()
-    unknown_num = len(list(paths.list_images(unknown_dir))) + 1
-    print("unknown num: {}".format(unknown_num))
-
-    picam2 = Picamera2()
-    picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
-    picam2.start_preview(Preview.QTGL, width=1280, height=960)
-    #dest_dir = "MemberVideo"
-    #picam2.start_and_record_video("memberVideo.mp4", duration=5)
-
-    (w0, h0) = picam2.stream_configuration("main")["size"] 
-    #(w1, h1) = picam2.stream_configuration("lores")["size"]
+camera_inited = False
 
 
 @stream.route('/stream', methods=['GET'])
@@ -63,7 +49,7 @@ def show():
 @stream.route('/stream/security_footage')
 @login_required  # Protect the video feed route
 def stream_footage():
-    return Response(stream_with_context(get_footage()), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(stream_with_context(get_footage()), mimetype='multipart/x-mixed-replace; boundary=web_frame')
     #print('test')
 
 def load_face_encodings():
@@ -76,10 +62,18 @@ def load_face_encodings():
 
 
 def draw_faces(request):
-    global unknown_num, unknown_dict, names, face_annotations
-    
+    global unknown_num, unknown_dict, face_annotations
+    global boxes, encodings, names#, rgb
     with MappedArray(request, "main") as m:
+        rgb = cv2.cvtColor(m.array, cv2.COLOR_BGR2RGB)
+        # Detect the face boxes
+        boxes = face_recognition.face_locations(rgb)
+        # compute the facial embeddings for each face bounding box
+        encodings = face_recognition.face_encodings(rgb, boxes)
+        names = []
+        
         # Clear the annotated_frame and start fresh
+        #print(f"m.array shape: {m.array.shape}") #returns "(480, 640, 4)"
         face_annotations = np.zeros_like(m.array)  # Black frame with same size as original
         name = ''
         # loop over the facial embeddings
@@ -165,29 +159,59 @@ def get_footage():
     global encodings
     global rgb
     
-    picam2.post_callback = draw_faces
-    picam2.start(show_preview = True)
+    # picam2.post_callback = draw_faces
+    # picam2.start()#(show_preview = True)
+    
     # loop over frames from the video file stream
     while True:
         # grab the frame from the threaded video stream and resize it
         # to 500px (to speedup processing)
         frame = picam2.capture_array()
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        annotated_frame = rgb
+        
+        
+        #Display the image (for debugging)
+        #cv2.imshow("rgb Frame", rgb)
+        annotated_frame = rgb.copy()
         if face_annotations is not None:
-            annotated_frame = cv2.addWeighted(annotated_frame, 1, face_annotations, 1, 0)
-        # Detect the face boxes
-        boxes = face_recognition.face_locations(rgb)
-        # compute the facial embeddings for each face bounding box
-        encodings = face_recognition.face_encodings(rgb, boxes)
-        names = []
+            print('have face annotations!')
+            cv2.imshow("annotations", face_annotations)
+            face_annotations_rgb = cv2.cvtColor(face_annotations, cv2.COLOR_BGRA2RGB)
+            #print(f'rgb shape & size: {annotated_frame.shape}, {annotated_frame.size}.\nannotations shape & size: {face_annotations_rgb.shape}, {face_annotations_rgb.size}')
+            annotated_frame = cv2.addWeighted(annotated_frame, 1, face_annotations_rgb, 1, 0)
+        
+        # Display the image (for debugging)
+        #cv2.imshow("Annotated Frame", annotated_frame)
 
+        # Set the JPEG compression quality to a lower value (e.g., 75)
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 75]  # 75 is lower quality
         # Encode the frame in JPEG format
-        _, buffer = cv2.imencode('.jpg', annotated_frame)
+        _, buffer = cv2.imencode('.jpg', rgb, encode_param)
         web_frame = buffer.tobytes()
         
+        print('yielding web frame!')
         yield (b'--web_frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + web_frame + b'\r\n')
+
+def init_video():
+    global picam2, unknown_num, camera_inited
+    load_face_encodings()
+    unknown_num = len(list(paths.list_images(unknown_dir))) + 1
+    print("unknown num: {}".format(unknown_num))
+
+    picam2 = Picamera2()
+    picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
+    picam2.post_callback = draw_faces
+    #picam2.start_preview(Preview.QTGL, width=1280, height=960)
+    #dest_dir = "MemberVideo"
+    #picam2.start_and_record_video("memberVideo.mp4", duration=5)
+
+    (w0, h0) = picam2.stream_configuration("main")["size"] 
+    #(w1, h1) = picam2.stream_configuration("lores")["size"]
+    
+    picam2.start()
+    camera_inited = True
+
 
     
 

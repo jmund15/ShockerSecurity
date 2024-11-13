@@ -5,6 +5,64 @@ body {
     color: #e0e0e0; /* Light text color for contrast */
 }
 
+/* Title Styling */
+h1 {
+    color: #FFDB00; /* Accent color */
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Container for the whole page content */
+.stream {
+    background-color: #1f1f1f; /* Slightly lighter background for contrast */
+    max-width: 85%;
+    margin: auto;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    justify-content: center; /* Center the content vertically inside the container */
+    align-items: center; /* Center the content horizontally inside the container */
+}
+
+/* Video Stream Container */
+.video-container {
+    background-color: #000; /* Black background for video */
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+/* Image Styling */
+.video-container img {
+    max-width: 640px;
+    width: 100%; /* Make the image responsive */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .video-container img {
+        width: 100%;
+    }
+}
+
+/* Optional: Add hover effect for title */
+h1:hover {
+    color: #FFB600; /* Lighter shade of yellow for hover effect */
+    cursor: pointer;
+}
+
 .container {
     max-width: 85%;
     margin: auto;

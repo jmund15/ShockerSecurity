@@ -9,13 +9,13 @@ from flaskIndex import index
 from flaskLogin import login, login_manager
 from flaskLogout import logout
 from flaskRegister import register
-from flaskStream import stream, init_video
+from flaskStream import stream, init_video, camera_inited
 from flaskManageFaces import faces
 
 from SQLiteConnect import initialize_db
 
 app = Flask(__name__, static_folder='../frontend/static')
-app.debug = True
+app.debug = False
 app.config['SECRET_KEY'] = 'secret_key'
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(seconds=100)#days=1)  # Optional: Set duration for remember cookie
 app.config['SESSION_COOKIE_SECURE'] = False
@@ -37,6 +37,8 @@ app.register_blueprint(stream)
 app.register_blueprint(faces)
    
 if __name__ == '__main__':
+    print('running main!')
     initialize_db()
+    #if not camera_inited:
     init_video()
     app.run(host='0.0.0.0', port=3000)
