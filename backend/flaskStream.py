@@ -24,14 +24,14 @@ stream = Blueprint('stream', __name__, template_folder='../frontend')
 
 picam2 = None
 face_dir = 'frontend/static/faceImages'
-unknown_dir = 'frontend/static/faceImages/Unknown'
+unknown_dir = 'frontend/static/faceImages'
 dictEncodingStr = "encodings"
 dictNamesStr = "names"
 encoding_dict = {dictEncodingStr: [], dictNamesStr: []}
 unknown_dict: dict[list, StreamTimer] = {}
 unknown_num = 0
-UNKNOWN_BUFFER_TIME = 2.0
-UNKNOWN_DETECTIONS_ALLOWED = 2
+UNKNOWN_BUFFER_TIME = 3.0
+UNKNOWN_DETECTIONS_ALLOWED = 1
 faces: list[Face] = []
 boxes = []
 encodings = []
@@ -62,14 +62,15 @@ def load_face_encodings():
     faces = getAllFaces()
     encoding_dict = {dictEncodingStr: [], dictNamesStr: []}
     for face in faces:
+        print(f'face path: {face.image_path}')
         encoding_dict[dictEncodingStr].append(face.encodings)
         encoding_dict[dictNamesStr].append(face.name)
 
 def run_face_recognition():
-    global boxes, encodings, names, thread_processing
+    global boxes, encodings, names, thread_processing, face_annotations
     thread_processing = True
     while True:
-        face_annotations = np.array([])
+        #face_annotations = np.array([])
         if (rgb.size == 0):
             #print('no rgb image, waiting!')
             continue
@@ -79,7 +80,7 @@ def run_face_recognition():
         # compute the facial embeddings for each face bounding box
         encodings = face_recognition.face_encodings(proc_frame, boxes)
         names = []
-        print(f'encoding_dict: {encoding_dict[dictEncodingStr]}')
+        #print(f'encoding_dict: {encoding_dict[dictEncodingStr]}')
         #print(f'encoding matches: {matches}')
         # loop over the facial embeddings
         for encoding in encodings:
@@ -121,21 +122,27 @@ def run_face_recognition():
                 # of votes (note: in the event of an unlikely tie Python
                 # will select first entry in the dictionary)
                 name = max(counts, key=counts.get)
+                print(f'detected face: {name}!')
             # update the list of names
             names.append(name)
+        if len(names) > 0:
+            # Create a transparent RGBA image with the same dimensions as the original
+            face_annotations = np.zeros((proc_frame.shape[0], proc_frame.shape[1], 4), dtype=np.uint8)
+            #face_annotations = #np.zeros_like(proc_frame.array) #np.zeros(proc_frame.shape, dtype=np.uint8)# # Black frame with same size as original
+        else:
+            face_annotations = np.array([])
         
-        face_annotations = np.zeros(proc_frame.shape, dtype=np.uint8)#np.zeros_like(proc_frame.array)  # Black frame with same size as original
         # loop over the recognized faces
         for ((top, right, bottom, left), name) in zip(boxes, names):
             # (x, y, w, h) = [c * n // d for c, n, d in zip(f, (w0, h0) * 2, (w1, h1) * 2)]            
             # cv2.rectangle(m.array, (x, y), (x + w, y + h), (0, 255, 0, 0))
             
             # draw the predicted face box on the image - color is in BGR
-            cv2.rectangle(face_annotations, (left, top), (right, bottom), (0, 255, 225), 0)
+            cv2.rectangle(face_annotations, (left, top), (right, bottom), (0, 255, 225), 2)
             # draw the predicted face name on the image - color is in BGR
             y = top - 15 if top - 15 > 15 else top + 15
-            cv2.putText(face_annotations, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 0)
-            
+            cv2.putText(face_annotations, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+        
     thread_processing = False
 
 # def draw_faces(request):
@@ -201,11 +208,12 @@ def check_unknown_alert(unknown_encoding):
     global unknown_dict, unknown_num
     if unknown_dict[unknown_encoding].time_left() != 0: #add to db bc alerted before timer ending
         unknown_dict[unknown_encoding].cancel()
-        face_path = "{0}/unknown_{1}.jpg".format(unknown_dir, unknown_num)
+        face_name = "face_{0}.jpg".format(unknown_num)
+        face_path = "{0}/{1}".format(unknown_dir, face_name)
         cv2.imwrite(face_path, rgb)
-        print(f'tuple ver: {unknown_encoding}.\nconverted back: {np.array(unknown_encoding)}')
+        #print(f'tuple ver: {unknown_encoding}.\nconverted back: {np.array(unknown_encoding)}')
 
-        addFace('Unknown', False, face_path, np.array(unknown_encoding))
+        addFace('Unknown!', False, face_name, np.array(unknown_encoding))
         print("unknown face detected! Send picture to user!")
         print("unknown num: {}".format(unknown_num))
         unknown_num += 1
@@ -232,6 +240,7 @@ def get_footage():
     global names
     global encodings
     global rgb
+    global face_annotations
     
     # picam2.post_callback = draw_faces
     # picam2.start()#(show_preview = True)
@@ -254,19 +263,32 @@ def get_footage():
         #cv2.imshow("rgb Frame", rgb)
         annotated_frame = rgb.copy()
         if face_annotations.size != 0:
-           print('have face annotations!')
-           cv2.imshow("annotations", face_annotations)
-           face_annotations_rgb = cv2.cvtColor(face_annotations, cv2.COLOR_BGRA2RGB)
-           #print(f'rgb shape & size: {annotated_frame.shape}, {annotated_frame.size}.\nannotations shape & size: {face_annotations_rgb.shape}, {face_annotations_rgb.size}')
-           annotated_frame = cv2.addWeighted(annotated_frame, 1, face_annotations_rgb, 1, 0)
-        
+            print(f'have face annotations!')
+           
+            # Convert the original BGR image to RGBA (so we can blend it with the annotations)
+            rgb_with_alpha = cv2.cvtColor(annotated_frame, cv2.COLOR_BGR2BGRA)
+
+            # Blend the annotations onto the original image using `cv2.addWeighted`
+            # The alpha channel in `face_annotations` will control transparency
+            alpha_annotated_frame = cv2.addWeighted(rgb_with_alpha, 1, face_annotations, 1, 0)
+            
+            face_path = "{0}/{1}".format(unknown_dir, 'full_frame.jpg')
+            cv2.imwrite(face_path, alpha_annotated_frame)
+            
+            # Convert back to BGR if you want to display it or save it in BGR format
+            annotated_frame = cv2.cvtColor(alpha_annotated_frame, cv2.COLOR_BGRA2BGR)
+            face_path = "{0}/{1}".format(unknown_dir, 'full_frame_DONE.jpg')
+            cv2.imwrite(face_path, annotated_frame)
+            
+            #cv2.imshow("annotations", annotated_frame)
+                    
         # Display the image (for debugging)
         #cv2.imshow("Annotated Frame", annotated_frame)
 
         # Set the JPEG compression quality to a lower value (e.g., 75)
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 75]  # 75 is lower quality
         # Encode the frame in JPEG format
-        _, buffer = cv2.imencode('.jpg', rgb, encode_param)
+        _, buffer = cv2.imencode('.jpg', annotated_frame, encode_param)
         web_frame = buffer.tobytes()
         
         #print('yielding web frame!')
@@ -274,13 +296,13 @@ def get_footage():
             b'Content-Type: image/jpeg\r\n\r\n' + web_frame + b'\r\n')
 
 def init_video():
-    global picam2, unknown_num, camera_inited, recognition_thread
+    global picam2, unknown_num, camera_inited, recognition_thread, face_annotations
     load_face_encodings()
     unknown_num = len(list(paths.list_images(unknown_dir))) + 1
     print("unknown num: {}".format(unknown_num))
 
     picam2 = Picamera2()
-    picam2.configure(picam2.create_preview_configuration(main={"size": (480, 320),}))#{"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
+    picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
     #picam2.post_callback = draw_faces
     #picam2.start_preview(Preview.QTGL, width=640, height=480)
     #dest_dir = "MemberVideo"
@@ -291,6 +313,7 @@ def init_video():
     
     picam2.start()#show_preview = True)
     camera_inited = True
+    face_annotations = np.array([])
     # Start the face recognition thread (only once)
     if not thread_processing:  # Ensure we only start one thread
         recognition_thread = threading.Thread(target=run_face_recognition, daemon=True)
