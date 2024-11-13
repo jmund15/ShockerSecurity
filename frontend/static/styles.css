@@ -11,35 +11,55 @@ h1 {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 20px;
+    text-align: center; /* Center the title */
 }
 
 /* Container for the whole page content */
 .stream {
-    background-color: #1f1f1f; /* Slightly lighter background for contrast */
+    background-color: #121212; /* Match the body background */
     max-width: 85%;
     margin: auto;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: center; /* Center the content vertically inside the container */
     align-items: center; /* Center the content horizontally inside the container */
 }
 
 /* Video Stream Container */
 .video-container {
-    background-color: #000; /* Black background for video */
+    position: relative;
+    /* background-color: #000; Black background for video */
     border-radius: 10px;
     padding: 10px;
     margin-top: 20px;
+    width: 80%;
+    /* max-width: 960px; Max width for video container */
+    overflow: visible; /* Prevent overflow */
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); */
+    display: flex;
+    justify-content: center;
 }
 
-/* Image Styling */
+/* Image (acting as video) Styling */
 .video-container img {
-    max-width: 640px;
+    position: relative; /* Allow for the shadow to appear correctly */
     width: 100%; /* Make the image responsive */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 4px; /* Rounded corners for a sleek look */
+    box-shadow: 4px 10px 10px rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    text-align: center;
+}
+
+/* Hover effect for video image */
+.video-container img:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 6px 15px 20px rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
 }
 
 /* Responsive Design */
@@ -48,8 +68,12 @@ h1 {
         font-size: 2rem;
     }
 
-    .container {
+    .stream {
         padding: 20px;
+    }
+
+    .video-container {
+        max-width: 100%; /* Allow video to use full width on smaller screens */
     }
 
     .video-container img {
@@ -60,7 +84,57 @@ h1 {
 /* Optional: Add hover effect for title */
 h1:hover {
     color: #FFB600; /* Lighter shade of yellow for hover effect */
+    cursor: default;
+}
+
+/* Full-Screen Button Styling */
+.fullscreen-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    color: #FFDB00;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
     cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for fullscreen button */
+.fullscreen-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Style when in full-screen mode */
+.fullscreen-button.fullscreen-active {
+    background-color: rgba(0, 0, 0, 0.8); /* Darker background */
+    color: #FF0000; /* Red text for exit fullscreen */
+}
+
+/* "LIVE" Icon in the top-left corner */
+.live-icon {
+    position: absolute;
+    top: 10px; /* Distance from the top of the container */
+    left: 10px; /* Distance from the left of the container */
+    padding: 5px 15px;
+    background-color: red; /* Red background */
+    color: white; /* White text */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 2px solid red; /* Red border */
+    border-radius: 5px; /* Slightly rounded corners */
+    z-index: 10; /* Make sure it's above the video */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
+    transition: opacity 0.3s ease;
+}
+
+/* Optionally, make it slightly transparent on hover */
+.live-icon:hover {
+    opacity: 0.8;
 }
 
 .container {

@@ -33,10 +33,12 @@
         <div class="stream">
             <h1>Live Stream</h1>
             <div class="video-container">
-                <img src="{{ url_for('stream.stream_footage') }}" alt="Video Stream not Available..."/>
+                <div class="live-icon">LIVE</div>
+                <img id="stream-image" src="{{ url_for('stream.stream_footage') }}" alt="Video Stream not Available..."/>
+                <button class="fullscreen-button">Full-Screen</button>
             </div>
         </div>
 
-        <script src="" async defer></script>
+        <script src="{{ url_for('static', filename='stream.js') }}"></script>
     </body>
 </html>
