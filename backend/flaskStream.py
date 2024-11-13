@@ -41,6 +41,7 @@ face_annotations = np.array([])
 camera_inited = False
 recognition_thread = None
 thread_processing = False
+lock_face_annotations = False
 
 
 @stream.route('/stream', methods=['GET'])
@@ -62,7 +63,7 @@ def load_face_encodings():
     faces = getAllFaces()
     encoding_dict = {dictEncodingStr: [], dictNamesStr: []}
     for face in faces:
-        print(f'face path: {face.image_path}')
+        #print(f'face path: {face.image_path}')
         encoding_dict[dictEncodingStr].append(face.encodings)
         encoding_dict[dictNamesStr].append(face.name)
 
@@ -87,7 +88,7 @@ def run_face_recognition():
             matches = face_recognition.compare_faces(encoding_dict[dictEncodingStr], encoding)
             name = ''
             
-            if len(matches) == 0:
+            if not any(matches): # if all values are False  #len(matches) == 0:
                 # No matches found; we now need to compare against unknown_dict
                 found_similar = False
                 # Check against the existing encodings in unknown_dict
@@ -118,11 +119,14 @@ def run_face_recognition():
                     name = encoding_dict[dictNamesStr][i]
                     counts[name] = counts.get(name, 0) + 1
 
+                #print(f'matches found: {matches}')
+                #print(f'counts found: {counts}')
+
                 # determine the recognized face with the largest number
                 # of votes (note: in the event of an unlikely tie Python
                 # will select first entry in the dictionary)
                 name = max(counts, key=counts.get)
-                print(f'detected face: {name}!')
+                #print(f'detected face: {name}!')
             # update the list of names
             names.append(name)
         if len(names) > 0:
@@ -166,7 +170,7 @@ def run_face_recognition():
                         # found_similar = True
                         # unknown_dict[unknown_encoding].iterate_detected()
                         # if unknown_dict[unknown_encoding].get_times_detected() > UNKNOWN_DETECTIONS_ALLOWED or unknown_dict[unknown_encoding].time_left < 0.5:
-                            # check_unknown_alert(unknown_encoding)
+                            # check_unknowrgb_with_alpha,n_alert(unknown_encoding)
                         # break
                 # if not found_similar:
                     # unknown_dict[encoding] = StreamTimer(UNKNOWN_BUFFER_TIME, check_unknown_alert, args=[encoding])
@@ -215,7 +219,7 @@ def check_unknown_alert(unknown_encoding):
 
         addFace('Unknown!', False, face_name, np.array(unknown_encoding))
         print("unknown face detected! Send picture to user!")
-        print("unknown num: {}".format(unknown_num))
+        #print("unknown num: {}".format(unknown_num))
         unknown_num += 1
         load_face_encodings() #added new face so reload encodings
     else: #timer finished before registering
@@ -263,30 +267,24 @@ def get_footage():
         #cv2.imshow("rgb Frame", rgb)
         annotated_frame = rgb.copy()
         if face_annotations.size != 0:
-            print(f'have face annotations!')
+            copy_annotations = face_annotations.copy()
+            #print(f'have face annotations!')
            
             # Convert the original BGR image to RGBA (so we can blend it with the annotations)
             rgb_with_alpha = cv2.cvtColor(annotated_frame, cv2.COLOR_BGR2BGRA)
-
+            
+            if copy_annotations.size == 0:
+                print('somehow annotations zero size boooohoooo')
+                continue
             # Blend the annotations onto the original image using `cv2.addWeighted`
             # The alpha channel in `face_annotations` will control transparency
-            alpha_annotated_frame = cv2.addWeighted(rgb_with_alpha, 1, face_annotations, 1, 0)
-            
-            face_path = "{0}/{1}".format(unknown_dir, 'full_frame.jpg')
-            cv2.imwrite(face_path, alpha_annotated_frame)
+            annotated_frame = cv2.addWeighted(rgb_with_alpha, 1, copy_annotations, 1, 0)
             
             # Convert back to BGR if you want to display it or save it in BGR format
-            annotated_frame = cv2.cvtColor(alpha_annotated_frame, cv2.COLOR_BGRA2BGR)
-            face_path = "{0}/{1}".format(unknown_dir, 'full_frame_DONE.jpg')
-            cv2.imwrite(face_path, annotated_frame)
-            
-            #cv2.imshow("annotations", annotated_frame)
-                    
-        # Display the image (for debugging)
-        #cv2.imshow("Annotated Frame", annotated_frame)
+            #annotated_frame = cv2.cvtColor(alpha_annotated_frame, cv2.COLOR_BGRA2BGR)
 
         # Set the JPEG compression quality to a lower value (e.g., 75)
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 75]  # 75 is lower quality
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]  # 75 is lower quality
         # Encode the frame in JPEG format
         _, buffer = cv2.imencode('.jpg', annotated_frame, encode_param)
         web_frame = buffer.tobytes()
