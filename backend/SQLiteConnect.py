@@ -1,4 +1,5 @@
 import sqlite3
+import numpy as np
 import os
 import inspect
 from cryptography.fernet import Fernet
@@ -119,7 +120,8 @@ def getAllFaces() -> list[Face]:
 
         # Create Face objects and append to the list
         for row in rows:
-            uid, name, accepted, imgPath, encodings  = row
+            uid, name, accepted, imgPath, blob_encodings  = row
+            encodings = np.frombuffer(blob_encodings, dtype=np.float64) 
             print('face imgPath: ', imgPath)
             #decryptedBlob = decryptData(blob)
             face = Face(uid, name, accepted, encodings, imgPath)
@@ -183,9 +185,12 @@ def addFace(name, accepted, imgPath, encodings):
 
     #empPhoto = convertToBinaryData(pictureLoc)
     #encryptedPhoto = encryptData(empPhoto)
+    
+    #convert encodings to bytes
+    blob_encodings = encodings.tobytes()
     try:
         # Execute the insert statement
-        curs.execute(statement, (name, accepted, imgPath, encodings))
+        curs.execute(statement, (name, accepted, imgPath, blob_encodings))
         # Commit the transaction
         conn.commit()
         print("Image and file inserted successfully as a BLOB into a table")
