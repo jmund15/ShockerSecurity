@@ -50,7 +50,7 @@ h1 {
     width: 100%; /* Make the image responsive */
     height: auto; /* Maintain aspect ratio */
     border-radius: 4px; /* Rounded corners for a sleek look */
-    box-shadow: 4px 10px 10px rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
+    box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
     object-fit: cover; /* Ensure the image covers the container without distortion */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
     text-align: center;
@@ -59,7 +59,7 @@ h1 {
 /* Hover effect for video image */
 .video-container img:hover {
     transform: scale(1.05); /* Slight zoom effect */
-    box-shadow: 6px 15px 20px rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
+    box-shadow: 9px 15px 20px #27251f89/* rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
 }
 
 /* Responsive Design */

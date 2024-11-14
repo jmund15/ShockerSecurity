@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add event listeners for image load and error
-    streamImage.addEventListener('error', hideLiveIcon); // Trigger if the image fails to load
-    streamImage.addEventListener('load', showLiveIcon);  // Trigger if the image loads successfully
+    streamImage.addEventListener('error', onStreamFail); // Trigger if the image fails to load
+    streamImage.addEventListener('load', onStreamSuccess);  // Trigger if the image loads successfully
     // Optionally, you can handle the initial state in case the image is already loading or failed on page load
     if (streamImage.naturalWidth === 0) {
-        hideLiveIcon();
+        onStreamFail();
     }
 });
 
@@ -64,11 +64,13 @@ function exitFullScreen() {
 }
 
 // Function to show the "LIVE" icon if the image fails to load
-function showLiveIcon() {
+function onStreamSuccess() {
     liveIcon.style.display = 'block'; // Show the "LIVE" icon
+    fullscreenButton.style.display = 'block';
 }
 
 // Function to hide the "LIVE" icon when the image loads successfully
-function hideLiveIcon() {
+function onStreamFail() {
     liveIcon.style.display = 'none'; // Hide the "LIVE" icon
+    fullscreenButton.style.display = 'none';
 }
