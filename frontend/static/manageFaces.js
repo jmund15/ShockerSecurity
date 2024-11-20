@@ -64,7 +64,7 @@ function loadTableData(facesData) {
                     <span class="checkmark"></span> <!-- Optional: for styling purposes -->
                 </label>
             </td>
-            <td><img src="${imageUrl + face.face}" alt="${face.name}" style="width: 50px; height: auto;"></td>
+            <td><img src="${imageUrl + face.face}" alt="${face.name}'s Image N/A" style="width: 50px; height: auto;"></td>
             <td><button class="deleteButton" data-id="${face.id}">Toggle Delete</button></td>`
         ;
        

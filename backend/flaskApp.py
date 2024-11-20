@@ -13,6 +13,7 @@ from flaskStream import stream, init_video, camera_inited
 from flaskManageFaces import faces
 
 from SQLiteConnect import initialize_db
+from sendEmail import alertUsers
 
 app = Flask(__name__, static_folder='../frontend/static')
 app.debug = False
@@ -39,6 +40,7 @@ app.register_blueprint(faces)
 if __name__ == '__main__':
     print('running main!')
     initialize_db()
+    alertUsers('C:\Users\jacob.mund\Personal\ShockerSecurity\Dr. Joel\image_0.jpg')
     #if not camera_inited:
-    init_video()
+    #init_video()
     app.run(host='0.0.0.0', port=3000)

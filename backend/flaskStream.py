@@ -18,7 +18,8 @@ import numpy as np
 import cv2
 
 from flaskModels import Face, CSRFForm, StreamTimer
-from SQLiteConnect import addFace, getAllFaces
+from SQLiteConnect import addFace, getAllFaces, getFaceFromName
+from sendEmail import alertUsers
 
 stream = Blueprint('stream', __name__, template_folder='../frontend')
 
@@ -129,6 +130,9 @@ def load_face_encodings():
 #                 #print(f'detected face: {name}!')
 #             # update the list of names
 #             names.append(name)
+#             detected_face = getFaceFromName(name)
+#             if not detected_face.accepted:
+#                 alertUsers(detected_face.image_path)
 #         if len(names) > 0:
 #             # Create a transparent RGBA image with the same dimensions as the original
 #             face_annotations = np.zeros((proc_frame.shape[0], proc_frame.shape[1], 4), dtype=np.uint8)
@@ -146,7 +150,6 @@ def load_face_encodings():
 #             # draw the predicted face name on the image - color is in BGR
 #             y = top - 15 if top - 15 > 15 else top + 15
 #             cv2.putText(face_annotations, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
-        
 #     thread_processing = False
 
 # # def draw_faces(request):
@@ -221,6 +224,7 @@ def load_face_encodings():
 #         print("unknown face detected! Send picture to user!")
 #         #print("unknown num: {}".format(unknown_num))
 #         unknown_num += 1
+#         alertUsers(face_path)
 #         load_face_encodings() #added new face so reload encodings
 #     else: #timer finished before registering
 #         print('face not detected again before timer timeout!')

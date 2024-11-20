@@ -110,6 +110,54 @@ def validateUser(email, password):
         print(f"'checkUser' ERROR: {e}")
         return None
     
+def get_unique_face_name(base_name):
+    name = base_name
+    i = 1
+    
+    while True:
+        # Check if the name already exists
+        curs.execute("SELECT COUNT(*) FROM faces WHERE name = ?", (name,))
+        count = curs.fetchone()[0]
+        
+        if count == 0:
+            break  # Unique name found
+        else:
+            # Increment the name
+            name = f"{base_name}{i}"
+            i += 1
+    
+    return name
+    
+def getFaceFromName(name) -> Face:
+    statement = '''SELECT * FROM faces WHERE name = ?'''
+    try:
+        # Execute the statement
+        curs.execute(statement, (name,))
+        result = curs.fetchone()
+
+        if result:
+            return Face(result[0], result[1], result[2], result[3], result[4])
+        else:
+            return None # face not found
+    except sqlite3.Error as e:
+        print(f"'getAllFaces' ERROR: {e}")
+        return None    
+    
+def getFaceFromEncodings(encodings) -> Face:
+    statement = '''SELECT * FROM faces WHERE encodings = ?'''
+    try:
+        # Execute the statement
+        curs.execute(statement, (encodings,))
+        result = curs.fetchone()
+
+        if result:
+            return Face(result[0], result[1], result[2], result[3], result[4])
+        else:
+            return None # face not found
+    except sqlite3.Error as e:
+        print(f"'getAllFaces' ERROR: {e}")
+        return None
+    
 def getAllFaces() -> list[Face]:
     statement = '''SELECT * FROM faces'''
     faces = []
@@ -183,6 +231,7 @@ def updateFace(id, name, accepted) -> bool: #face encodings and pictures won't b
 def addFace(name, accepted, imgPath, encodings):
     statement = ''' INSERT INTO faces (name, accepted, imgPath, encodings) VALUES (?, ?, ?, ?)'''
 
+    get_unique_face_name(name)
     #empPhoto = convertToBinaryData(pictureLoc)
     #encryptedPhoto = encryptData(empPhoto)
     
