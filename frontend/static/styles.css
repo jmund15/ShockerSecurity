@@ -22,9 +22,9 @@ h1:hover {
 /* Container for the whole page content */
 .stream {
     background-color: #121212; /* Match the body background */
-    max-width: 85%;
+    max-width: 90%;
     margin: auto;
-    padding: 40px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 100%;
@@ -41,11 +41,12 @@ h1:hover {
 .video-container {
     position: relative;
     max-width: 100%; /* Ensure it doesn't exceed screen width */
-    /* max-height: 100vh; Limit height to 80% of the screen height */
+    max-height: 80vh; /* Limit height to 80% of the screen height */
     overflow: visible; /* Prevent overflow VISIBLE */
 
     /* background-color: #000; Black background for video */
     border-radius: 4px; /* Rounded corners for a sleek look */
+    border: 2px solid #ddc000a7;
     box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
 
     padding: 10px;
@@ -65,7 +66,6 @@ h1:hover {
     position: relative; /* Allow for the shadow to appear correctly */
     width: 100%; /* Make the image responsive */
     height: auto; /* Maintain aspect ratio */
-    border: 2px solid #ddc000a7;
     
     object-fit: cover; /* Ensure the image covers the container without distortion */
     
@@ -85,7 +85,7 @@ h1:hover {
     }
 
     .stream {
-        padding: 20px;
+        padding: 10px;
     }
 
     .video-container {
