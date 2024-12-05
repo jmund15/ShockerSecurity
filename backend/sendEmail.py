@@ -22,7 +22,7 @@ def get_local_ip():
 
 def alertUsers(image_path, previously_detected = False):
     time = datetime.now().strftime("%I:%M %p")
-    day = datetime.now().strftime("%d/%m/%Y")
+    day = datetime.now().strftime("%m/%d/%Y")
     local_ip = get_local_ip()
     print('local ip: ', local_ip)
     

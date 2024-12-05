@@ -1,0 +1,11 @@
+[Unit]
+Description=ShockerSecurity Startup Service
+
+[Service]
+ExecStart=StartShockerSecurity.sh
+Restart=always
+User=jmund
+WorkingDirectory=/ShockerSecurity
+
+[Install]
+WantedBy=multi-user.target
