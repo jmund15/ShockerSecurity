@@ -53,6 +53,9 @@ h1:hover {
     /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); */
     display: flex;
     justify-content: center;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    transform-origin: center;
 }
 
 /* Image (acting as video) Styling */
@@ -64,13 +67,12 @@ h1:hover {
     border-radius: 4px; /* Rounded corners for a sleek look */
     box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
     object-fit: cover; /* Ensure the image covers the container without distortion */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
-    transform-origin: center;
+    
     text-align: center;
 }
 
 /* Hover effect for video image */
-.video-container img:hover {
+.video-container:hover {
     transform: scale(1.05); /* Slight zoom effect */
     border: 1px solid #ddc000a7;
     box-shadow: 9px 15px 20px #27251f89/* rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
@@ -142,13 +144,13 @@ h1:hover {
     transition: transform 0.3s ease;
 
     width: auto;
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 /* Optionally, make it slightly transparent on hover */
-/* .live-icon:hover {
-    opacity: 0.5;
-} */
+.live-icon:hover {
+    opacity: 0.8;
+}
 
 /* .video-container img:hover ~ .live-icon,
 .video-container img:hover ~ .fullscreen-button {
