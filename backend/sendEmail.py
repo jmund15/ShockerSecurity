@@ -6,29 +6,46 @@ from email.mime.image import MIMEImage
 
 from SQLiteConnect import getAllEmails
 
-def alertUsers(image_path):
+def alertUsers(image_path, previously_detected = False):
     time = datetime.now().strftime("%I:%M %p")
-
+    day = datetime.now().strftime("%d/%m/%Y")
+    
     recipient_emails = getAllEmails() 
-    for email in recipient_emails:
-        #sendEmail(time, email)
-        sendEmail(time, email, image_path)
 
-def sendEmail(time, recipient_email, image_path = None):
-    smtp_server = 'smtp.gmail.com' #sender email must be gmail (use smtp-mail.outlook.com if using outlook email)
-    smtp_port = 587
-    sender_email = 'shockerscrty.noreply@gmail.com'  # Replace with account email
-    sender_password = 'ShockerSecurity3!'  # Replace with account password
+    subject = "ShockerSecurity Alert: "
+    if previously_detected:
+        subject += "Detected Unauthorized Person!"
+    else:
+        subject += "Detected Unidentified Person!"
 
-    subject = "Detected Unidentified Person"
-    body = f"An identified person was seen at {time}."
+    body = f"""
+<html>
+    <body>
+        <p>The person was seen at {time} on {day}. See the attached image for details.</p>
+        <p>To make adjustments, login <a href="http://192.168.155.54:3000">here</a>.</p>
+    </body>
+</html>
+"""
+    #http://192.168.155.54:3000
+
+    sendEmail(recipient_emails, subject, body, image_path)
+
+def sendEmail(recipient_emails, subject, body_html, image_path=None):
+    print('sending email! \n\tsubject: ', subject, '\n\tbody: ', body_html, '\n\temails: ', recipient_emails, '\n\timage: ', image_path)
+    
+    smtp_server = 'smtp.gmail.com'  # SMTP server (use smtp-mail.outlook.com for Outlook)
+    smtp_port = 465  # SSL port (use 587 for STARTTLS)
+    sender_email = 'shockerscrty.noreply@gmail.com'  # Sender email
+    sender_password = 'xnue bvwz mdrs nreo'  # Sender password (or app password if 2FA is enabled)
 
     msg = MIMEMultipart()
     msg['From'] = sender_email
-    msg['To'] = recipient_email
+    msg['To'] = ", ".join(recipient_emails)  # Join the list of emails into a single comma-separated string
     msg['Subject'] = subject
 
-    msg.attach(MIMEText(body, 'plain'))
+    # Attach the body text to the email
+    msg.attach(MIMEText(body_html, 'html'))
+    #print('attached body!')
 
     if image_path is not None:
         with open(image_path, 'rb') as fp:
@@ -36,8 +53,24 @@ def sendEmail(time, recipient_email, image_path = None):
         img.add_header('Content-Disposition', 'attachment', filename='unaccepted_face.jpg')
         msg.attach(img)
 
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, recipient_email, msg.as_string())
+    #print('attached image!')
+
+    try:
+        # Use SMTP_SSL to directly create an SSL connection
+        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+            #print('opened server')
+            server.login(sender_email, sender_password)  # Login to the server
+            #print('logged in!')
+            server.sendmail(sender_email, recipient_emails, msg.as_string())  # Send the email to multiple recipients
+            print('email sent!')
+    except Exception as e:
+        print('Error:', e)
+
+    # with smtplib.SMTP(smtp_server, smtp_port) as server:
+    #     print('opened server')
+    #     server.starttls()
+    #     print('started tls!')
+    #     server.login(sender_email, sender_password)
+    #     print('logged in!')
+    #     server.sendmail(sender_email, recipient_email, msg.as_string())
 
