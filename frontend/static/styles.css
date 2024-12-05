@@ -13,6 +13,11 @@ h1 {
     margin-bottom: 20px;
     text-align: center; /* Center the title */
 }
+/* Optional: Add hover effect for title */
+h1:hover {
+    color: #FFB600; /* Lighter shade of yellow for hover effect */
+    cursor: default;
+}
 
 /* Container for the whole page content */
 .stream {
@@ -32,16 +37,15 @@ h1 {
 /* Video Stream Container */
 .video-container {
     position: relative;
-    /* background-color: #000; Black background for video */
     border-radius: 10px;
     padding: 10px;
     margin-top: 20px;
     width: 75%;
-    /* max-width: 960px; Max width for video container */
-    overflow: visible; /* Prevent overflow */
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); */
+    max-width: 960px; /* Max width for video container */
+    overflow: hidden; /* Prevent any overflow */
     display: flex;
     justify-content: center;
+    align-items: center; /* Center content vertically */
 }
 
 /* Image (acting as video) Styling */
@@ -49,9 +53,9 @@ h1 {
     position: relative; /* Allow for the shadow to appear correctly */
     width: 100%; /* Make the image responsive */
     height: auto; /* Maintain aspect ratio */
-    border: 1px #FFDB00;
+    border: 1px solid #FFDB00;
     border-radius: 4px; /* Rounded corners for a sleek look */
-    box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
+    box-shadow: 6px 10px 10px rgba(39, 37, 31, 0.59); /* Drop shadow slightly to the right and below */
     object-fit: cover; /* Ensure the image covers the container without distortion */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
     text-align: center;
@@ -60,38 +64,23 @@ h1 {
 /* Hover effect for video image */
 .video-container img:hover {
     transform: scale(1.05); /* Slight zoom effect */
-    box-shadow: 9px 15px 20px #27251f89/* rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
+    box-shadow: 9px 15px 20px rgba(39, 37, 31, 0.56); /* Stronger shadow on hover */
 }
-.video-container img:hover ~ .live-icon {
-    transform: scale(1.05); /* Slight zoom effect */
-}
+
+/* Make .live-icon and .fullscreen-button appear when image is hovered */
+.video-container img:hover ~ .live-icon,
 .video-container img:hover ~ .fullscreen-button {
+    opacity: 1; /* Make them visible */
+    visibility: visible; /* Make sure they're visible on hover */
     transform: scale(1.05); /* Slight zoom effect */
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
-    }
-
-    .stream {
-        padding: 20px;
-    }
-
-    .video-container {
-        max-width: 100%; /* Allow video to use full width on smaller screens */
-    }
-
-    .video-container img {
-        width: 100%;
-    }
-}
-
-/* Optional: Add hover effect for title */
-h1:hover {
-    color: #FFB600; /* Lighter shade of yellow for hover effect */
-    cursor: default;
+/* Hide .live-icon and .fullscreen-button by default */
+.live-icon,
+.fullscreen-button {
+    opacity: 0; /* Hidden by default */
+    visibility: hidden; /* Hidden by default */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease; /* Smooth transition */
 }
 
 /* Full-Screen Button Styling */
@@ -136,13 +125,33 @@ h1:hover {
     border-radius: 5px; /* Slightly rounded corners */
     z-index: 10; /* Make sure it's above the video */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth hover transition */
 }
 
 /* Optionally, make it slightly transparent on hover */
 .live-icon:hover {
     opacity: 0.8;
 }
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .stream {
+        padding: 20px;
+    }
+
+    .video-container {
+        max-width: 100%; /* Allow video to use full width on smaller screens */
+    }
+
+    .video-container img {
+        width: 100%;
+    }
+}
+
 
 .container {
     max-width: 85%;
