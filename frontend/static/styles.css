@@ -41,7 +41,7 @@ h1:hover {
 .video-container {
     position: relative;
     max-width: 100%; /* Ensure it doesn't exceed screen width */
-    max-height: 90vh; /* Limit height to 80% of the screen height */
+    max-height: 100vh; /* Limit height to 80% of the screen height */
     overflow: visible; /* Prevent overflow VISIBLE */
 
     /* background-color: #000; Black background for video */
@@ -151,10 +151,10 @@ h1:hover {
 
 .video-container img:hover ~ .live-icon {
     transform: translateX(-5px);
-    transform: translateY(5px);
+    transform: translateY(-5px);
 }
 .video-container img:hover ~ .fullscreen-button {
-    transform: translateX(-5px);
+    transform: translateX(5px);
     transform: translateY(5px);
 }
 
