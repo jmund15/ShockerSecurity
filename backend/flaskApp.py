@@ -40,7 +40,7 @@ app.register_blueprint(faces)
 if __name__ == '__main__':
     #print('running main!')
     initialize_db()
-    alertUsers("C:\\Users\\jmund\\WSU Shtuff\\CS 598\\ShockerSecurity\\Dr. Joel\\image_0.jpg")
+    #alertUsers("C:\\Users\\jmund\\WSU Shtuff\\CS 598\\ShockerSecurity\\Dr. Joel\\image_0.jpg")
     #if not camera_inited:
-    #init_video()
-    #app.run(host='0.0.0.0', port=3000)
+    init_video()
+    app.run(host='0.0.0.0', port=3000)

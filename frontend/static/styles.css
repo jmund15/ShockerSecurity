@@ -36,7 +36,7 @@ h1 {
     border-radius: 10px;
     padding: 10px;
     margin-top: 20px;
-    width: 80%;
+    width: 75%;
     /* max-width: 960px; Max width for video container */
     overflow: visible; /* Prevent overflow */
     /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); */
@@ -49,6 +49,7 @@ h1 {
     position: relative; /* Allow for the shadow to appear correctly */
     width: 100%; /* Make the image responsive */
     height: auto; /* Maintain aspect ratio */
+    border: 1px #FFDB00;
     border-radius: 4px; /* Rounded corners for a sleek look */
     box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
     object-fit: cover; /* Ensure the image covers the container without distortion */
@@ -60,6 +61,12 @@ h1 {
 .video-container img:hover {
     transform: scale(1.05); /* Slight zoom effect */
     box-shadow: 9px 15px 20px #27251f89/* rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
+}
+.video-container img:hover ~ .live-icon {
+    transform: scale(1.05); /* Slight zoom effect */
+}
+.video-container img:hover ~ .fullscreen-button {
+    transform: scale(1.05); /* Slight zoom effect */
 }
 
 /* Responsive Design */

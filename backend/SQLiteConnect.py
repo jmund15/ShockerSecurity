@@ -134,13 +134,15 @@ def getFaceFromName(name) -> Face:
         # Execute the statement
         curs.execute(statement, (name,))
         result = curs.fetchone()
-
+        
+        #print('getFaceFromName result: ', result)
+        
         if result:
-            return Face(result[0], result[1], result[2], result[3], result[4])
+            return Face(result[0], result[1], result[2], result[4], result[3])
         else:
             return None # face not found
     except sqlite3.Error as e:
-        print(f"'getAllFaces' ERROR: {e}")
+        print(f"'getFaceFromName' ERROR: {e}")
         return None    
     
 def getFaceFromEncodings(encodings) -> Face:
@@ -151,11 +153,11 @@ def getFaceFromEncodings(encodings) -> Face:
         result = curs.fetchone()
 
         if result:
-            return Face(result[0], result[1], result[2], result[3], result[4])
+            return Face(result[0], result[1], result[2], result[4], result[3])
         else:
             return None # face not found
     except sqlite3.Error as e:
-        print(f"'getAllFaces' ERROR: {e}")
+        print(f"'getFaceFromEncodings' ERROR: {e}")
         return None
     
 def getAllFaces() -> list[Face]:

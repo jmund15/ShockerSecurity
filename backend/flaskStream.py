@@ -1,16 +1,16 @@
 #! /usr/bin/python
 
 # import the necessary packages
-#from picamera2 import Picamera2, MappedArray, Preview
+from picamera2 import Picamera2, MappedArray, Preview
 import numpy as np
 from imutils import paths
 import os
 import threading
 #import queue
-#import face_recognition
+import face_recognition
 import imutils
 import time 
-from flask import Blueprint, Response, render_template, stream_with_context
+from flask import Blueprint, Response, render_template, stream_with_context, url_for
 from flask_login import login_required
 
 import time
@@ -132,7 +132,8 @@ def run_face_recognition():
             names.append(name)
             detected_face = getFaceFromName(name)
             if not detected_face.accepted:
-                alertUsers(detected_face.image_path, previously_detected=True)
+                img_path = 'frontend/static/faceImages/' + detected_face.image_path
+                alertUsers(img_path, previously_detected=True)
         if len(names) > 0:
             # Create a transparent RGBA image with the same dimensions as the original
             face_annotations = np.zeros((proc_frame.shape[0], proc_frame.shape[1], 4), dtype=np.uint8)
@@ -300,26 +301,26 @@ def get_footage():
 def init_video():
     global picam2, unknown_num, camera_inited, recognition_thread, face_annotations
     load_face_encodings()
-    # unknown_num = len(list(paths.list_images(unknown_dir))) + 1
-    # print("unknown num: {}".format(unknown_num))
+    unknown_num = len(list(paths.list_images(unknown_dir))) + 1
+    print("unknown num: {}".format(unknown_num))
 
-    # picam2 = Picamera2()
-    # picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
-    # #picam2.post_callback = draw_faces
-    # #picam2.start_preview(Preview.QTGL, width=640, height=480)
-    # #dest_dir = "MemberVideo"
-    # #picam2.start_and_record_video("memberVideo.mp4", duration=5)
+    picam2 = Picamera2()
+    picam2.configure(picam2.create_preview_configuration(main={"size": (640, 480),}))#, lores={"size": (320, 240), "format": "YUV420"}))
+    #picam2.post_callback = draw_faces
+    #picam2.start_preview(Preview.QTGL, width=640, height=480)
+    #dest_dir = "MemberVideo"
+    #picam2.start_and_record_video("memberVideo.mp4", duration=5)
 
-    # (w0, h0) = picam2.stream_configuration("main")["size"] 
-    # #(w1, h1) = picam2.stream_configuration("lores")["size"]
+    (w0, h0) = picam2.stream_configuration("main")["size"] 
+    #(w1, h1) = picam2.stream_configuration("lores")["size"]
     
-    # picam2.start()#show_preview = True)
-    # camera_inited = True
-    # face_annotations = np.array([])
-    # # Start the face recognition thread (only once)
-    # if not thread_processing:  # Ensure we only start one thread
-    #     recognition_thread = threading.Thread(target=run_face_recognition, daemon=True)
-    #     recognition_thread.start()
+    picam2.start()#show_preview = True)
+    camera_inited = True
+    face_annotations = np.array([])
+    # Start the face recognition thread (only once)
+    if not thread_processing:  # Ensure we only start one thread
+        recognition_thread = threading.Thread(target=run_face_recognition, daemon=True)
+        recognition_thread.start()
         
 def stop_video():
     global picam2, thread_processing

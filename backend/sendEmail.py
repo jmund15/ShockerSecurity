@@ -1,4 +1,5 @@
 import smtplib
+import socket
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -6,9 +7,24 @@ from email.mime.image import MIMEImage
 
 from SQLiteConnect import getAllEmails
 
+def get_local_ip():
+    try:
+        # Create a socket and connect to an external host (e.g., Google's DNS server)
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.settimeout(0)
+        # This does not actually connect, but gets the local IP address
+        s.connect(('8.8.8.8', 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+        return local_ip
+    except Exception as e:
+        return f"Error fetching local IP address: {e}"
+
 def alertUsers(image_path, previously_detected = False):
     time = datetime.now().strftime("%I:%M %p")
     day = datetime.now().strftime("%d/%m/%Y")
+    local_ip = get_local_ip()
+    print('local ip: ', local_ip)
     
     recipient_emails = getAllEmails() 
 
@@ -22,7 +38,7 @@ def alertUsers(image_path, previously_detected = False):
 <html>
     <body>
         <p>The person was seen at {time} on {day}. See the attached image for details.</p>
-        <p>To make adjustments, login <a href="http://192.168.155.54:3000">here</a>.</p>
+        <p>To make adjustments, login <a href="http://{local_ip}:3000">here</a>.</p>
     </body>
 </html>
 """
