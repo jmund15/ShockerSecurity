@@ -154,8 +154,8 @@ h1:hover {
     transform: translateY(5px);
 }
 .video-container img:hover ~ .fullscreen-button {
-    transform: translateX(5px);
-    transform: translateY(-5px);
+    transform: translateX(-5px);
+    transform: translateY(5px);
 }
 
 .container {
