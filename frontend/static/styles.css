@@ -41,11 +41,13 @@ h1:hover {
 .video-container {
     position: relative;
     max-width: 100%; /* Ensure it doesn't exceed screen width */
-    max-height: 100vh; /* Limit height to 80% of the screen height */
+    /* max-height: 100vh; Limit height to 80% of the screen height */
     overflow: visible; /* Prevent overflow VISIBLE */
 
     /* background-color: #000; Black background for video */
-    border-radius: 4px;
+    border-radius: 4px; /* Rounded corners for a sleek look */
+    box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
+
     padding: 10px;
     margin-top: 20px;
 
@@ -63,9 +65,8 @@ h1:hover {
     position: relative; /* Allow for the shadow to appear correctly */
     width: 100%; /* Make the image responsive */
     height: auto; /* Maintain aspect ratio */
-    border: 1px solid #ddc000a7;
-    border-radius: 4px; /* Rounded corners for a sleek look */
-    box-shadow: 6px 10px 10px #27251f95; /*rgba(60, 60, 60, 0.7); /* Drop shadow slightly to the right and below */
+    border: 2px solid #ddc000a7;
+    
     object-fit: cover; /* Ensure the image covers the container without distortion */
     
     text-align: center;
@@ -74,7 +75,6 @@ h1:hover {
 /* Hover effect for video image */
 .video-container:hover {
     transform: scale(1.05); /* Slight zoom effect */
-    border: 1px solid #ddc000a7;
     box-shadow: 9px 15px 20px #27251f89/* rgba(75, 75, 75, 0.6); /* Drop shadow slightly to the right and below */
 }
 
@@ -142,14 +142,13 @@ h1:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
     transition: opacity 0.3s ease;
     transition: transform 0.3s ease;
-
     width: auto;
     /* pointer-events: none; */
 }
 
 /* Optionally, make it slightly transparent on hover */
 .live-icon:hover {
-    opacity: 0.8;
+    opacity: 0.5;
 }
 
 /* .video-container img:hover ~ .live-icon,
