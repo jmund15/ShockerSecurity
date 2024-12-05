@@ -107,7 +107,7 @@ h1:hover {
 /* Full-Screen Button Styling */
 .fullscreen-button {
     position: absolute;
-    bottom: 10px;
+    bottom: 7px;
     right: 10px;
     background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
     color: #FFDB00;
@@ -135,7 +135,7 @@ h1:hover {
 /* "LIVE" Icon in the top-left corner */
 .live-icon {
     position: absolute;
-    top: 10px; /* Distance from the top of the container */
+    top: 7px; /* Distance from the top of the container */
     left: 10px; /* Distance from the left of the container */
     padding: 5px 15px;
     background-color: red; /* Red background */
