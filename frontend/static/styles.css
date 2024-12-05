@@ -19,6 +19,11 @@ h1:hover {
     cursor: default;
 }
 
+.livestream {
+    overflow: hidden;
+    height: 100vh;
+}
+
 /* Container for the whole page content */
 .stream {
     background-color: #121212; /* Match the body background */
@@ -33,7 +38,7 @@ h1:hover {
     justify-content: start; /* Center the content vertically inside the container */
     align-items: center; /* Center the content horizontally inside the container */
 
-    height: 100vh; /* Full height of the viewport */
+    height: 90vh; /* Full height of the viewport */
     overflow: hidden;
 }
 
