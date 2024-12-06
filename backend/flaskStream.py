@@ -114,7 +114,7 @@ def run_face_recognition():
                     unknown_dict[encoding_tuple] = StreamTimer(UNKNOWN_BUFFER_TIME, check_unknown_alert, args=[encoding_tuple])
                     unknown_dict[encoding_tuple].iterate_detected()
                     unknown_dict[encoding_tuple].start()
-                name = 'Unknown!'
+                name = 'Unknown'
             else:
                 # find the indexes of all matched faces then initialize a
                 # dictionary to count the total number of times each face
@@ -242,11 +242,11 @@ def check_unknown_alert(unknown_encoding):
         cv2.imwrite(face_path, rgb)
         #print(f'tuple ver: {unknown_encoding}.\nconverted back: {np.array(unknown_encoding)}')
 
-        addFace('Unknown!', False, face_name, np.array(unknown_encoding))
+        addFace('Unknown', False, face_name, np.array(unknown_encoding))
         print("unknown face detected! Send picture to user!")
         #print("unknown num: {}".format(unknown_num))
         unknown_num += 1
-        alertUsers(face_path, name='Unknown!')
+        alertUsers(face_path, name='Unknown')
         load_face_encodings() #added new face so reload encodings
     else: #timer finished before registering
         print('face not detected again before timer timeout!')

@@ -112,7 +112,7 @@ def validateUser(email, password):
     
 def get_unique_face_name(base_name):
     name = base_name
-    i = 1
+    i = 2
     
     while True:
         # Check if the name already exists
