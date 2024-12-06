@@ -28,6 +28,10 @@ h1:hover {
 .stream {
     background-color: #121212; /* Match the body background */
     max-width: 90%;
+/*
+    max-height: 100vh; /* Full height of the viewport */
+*/
+    
     margin: auto;
     padding: 10px;
     border-radius: 10px;
@@ -38,7 +42,6 @@ h1:hover {
     justify-content: start; /* align the content vertically inside the container */
     align-items: center; /* Center the content horizontally inside the container */
 
-    max-height: 90vh; /* Full height of the viewport */
 /*
     overflow: hidden;
 */
@@ -49,6 +52,7 @@ h1:hover {
     position: relative;
     max-width: 100%; /* Ensure it doesn't exceed screen width */
     max-height: 80vh; /* Limit height to 80% of the screen height */
+    
     overflow: hidden; /* Hide overflow to prevent stretching */
     background-color: black; /* Black background for letterbox effect */
     border-radius: 4px; /* Rounded corners for a sleek look */
@@ -86,6 +90,7 @@ h1:hover {
     width: 100vw; /* Full screen width */
     height: 75vw; /* 4:3 aspect ratio (height = 3/4 * width) */
     max-height: none; /* Remove max-height restriction in fullscreen */
+    align-items: center
 }
 
 /* Responsive Design */
@@ -118,6 +123,7 @@ h1:hover {
     color: #FFDB00;
     border: none;
     border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
     padding: 8px 12px;
     font-size: 14px;
     cursor: pointer;

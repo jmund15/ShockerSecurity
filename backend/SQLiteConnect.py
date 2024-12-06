@@ -125,7 +125,7 @@ def get_unique_face_name(base_name):
             # Increment the name
             name = f"{base_name}{i}"
             i += 1
-    
+    print('base name: ', base_name, '\ndecided name: ', name)
     return name
     
 def getFaceFromName(name) -> Face:
@@ -230,8 +230,9 @@ def updateFace(id, name, accepted) -> bool: #face encodings and pictures won't b
 
 def addFace(name, accepted, imgPath, encodings):
     statement = ''' INSERT INTO faces (name, accepted, imgPath, encodings) VALUES (?, ?, ?, ?)'''
+    
+    unique_name = get_unique_face_name(name)
 
-    get_unique_face_name(name)
     #empPhoto = convertToBinaryData(pictureLoc)
     #encryptedPhoto = encryptData(empPhoto)
     
@@ -239,7 +240,7 @@ def addFace(name, accepted, imgPath, encodings):
     blob_encodings = encodings.tobytes()
     try:
         # Execute the insert statement
-        curs.execute(statement, (name, accepted, imgPath, blob_encodings))
+        curs.execute(statement, (unique_name, accepted, imgPath, blob_encodings))
         # Commit the transaction
         conn.commit()
         print("Image and file inserted successfully as a BLOB into a table")
