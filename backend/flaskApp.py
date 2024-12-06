@@ -38,6 +38,11 @@ app.register_blueprint(register)
 app.register_blueprint(stream)
 app.register_blueprint(faces)
 
+@app.route('/favicon.ico')
+def favicon_placeholder():
+    return '', 204
+
+
 # Error handler for general exceptions
 @app.errorhandler(Exception)
 def handle_exception(error):
