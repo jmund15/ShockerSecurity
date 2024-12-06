@@ -1,16 +1,18 @@
 Already up to date.
 
-[0:41:46.715311236] [23964] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:325 [0mlibcamera v0.3.2+27-7330f29b
-[0:41:46.745040650] [23971] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
-[0:41:46.747256865] [23971] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/imx708@1a to Unicam device /dev/media4 and ISP device /dev/media2
-[0:41:46.747344175] [23971] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1126 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
-[0:41:46.753924067] [23964] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1197 [0mconfiguring streams: (0) 640x480-XBGR8888 (1) 1536x864-SBGGR10_CSI2P
-[0:41:46.754407741] [23971] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10 - Selected unicam format: 1536x864-pBAA
-Error: Connection unexpectedly closed
+[1:04:43.739461033] [29522] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:325 [0mlibcamera v0.3.2+27-7330f29b
+[1:04:43.767902485] [29547] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[1:04:43.770146926] [29547] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/imx708@1a to Unicam device /dev/media4 and ISP device /dev/media2
+[1:04:43.770258312] [29547] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1126 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[1:04:43.777407694] [29522] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1197 [0mconfiguring streams: (0) 640x480-XBGR8888 (1) 1536x864-SBGGR10_CSI2P
+[1:04:43.777895132] [29547] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10 - Selected unicam format: 1536x864-pBAA
+email sent!
 face imgPath:  face_62.jpg
 face imgPath:  face_65.jpg
-face imgPath:  face_85.jpg
-unknown num: 86
+face imgPath:  face_87.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+unknown num: 92
  * Serving Flask app 'flaskApp'
  * Debug mode: off
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
@@ -18,488 +20,79 @@ WARNING: This is a development server. Do not use it in a production deployment.
  * Running on http://127.0.0.1:3000
  * Running on http://192.168.157.27:3000
 Press CTRL+C to quit
-192.168.157.54 - - [06/Dec/2024 11:26:22] "GET /faces HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /static/manageFaces.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /static/faceImages/face_85.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:23] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:27] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:27] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:27] "POST /faces/delete HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:28] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:29] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:29] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:29] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:26:29] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:26:30] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:34:18] "GET /faces HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /static/manageFaces.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /static/faceImages/face_87.jpg HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /static/faceImages/face_86.jpg HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:19] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "POST /faces/delete HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "POST /faces/update HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "GET /login?next=/faces/update HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:29] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:37] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:37] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:37] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:37] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:39] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:39] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:39] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:39] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:39] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /faces HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /static/manageFaces.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:49] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:54] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:54] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:54] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:55] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:56] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:56] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:56] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:34:56] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:34:56] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:35:17] "GET / HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:35:17] "GET /login HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:35:17] "GET /stream HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:35:18] "GET /login?next=/stream HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:35:18] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:35:18] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:35:18] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:35:18] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:35:18] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /faces HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /static/manageFaces.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:35:19] "GET /static/faceImages/face_88.jpg HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:35:20] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:22] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:36:22] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:22] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:22] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:36:23] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:36:48] "GET /faces HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:36:48] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:48] "GET /static/manageFaces.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:49] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:36:49] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:36:49] "GET /static/faceImages/face_88.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:49] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:49] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:36:49] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "POST /faces/update HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "GET /login?next=/faces/update HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:18] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:20] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:20] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:20] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:20] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:20] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /faces HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /login?next=/faces HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:25] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /faces HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /login?next=/faces HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:27] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:37:28] "GET /faces HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /static/manageFaces.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /static/faceImages/face_88.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:29] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-LOADING USER!!
-uid provided:  1
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_85.jpg
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-delete_face called!
-deleteFace called
-Face with uid 54 has been removed.
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-LOADING USER!!
-uid provided:  1
-face not detected again before timer timeout!
-base name:  Unknown 
-decided name:  Unknown
-Image and file inserted successfully as a BLOB into a table
-unknown face detected! Send picture to user!
-local ip:  192.168.157.27
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_86.jpg
-email sent!
-base name:  Unknown 
-decided name:  Unknown2
-Image and file inserted successfully as a BLOB into a table
-unknown face detected! Send picture to user!
-local ip:  192.168.157.27
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_86.jpg
-face imgPath:  face_87.jpg
-local ip:  192.168.157.27
-email sent!
-email sent!
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_86.jpg
-face imgPath:  face_87.jpg
-email sent!
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-delete_face called!
-deleteFace called
-Face with uid 55 has been removed.
-LOADING USER!!
-uid provided:  1
-getUserFromID ERROR: Recursive use of cursors not allowed.
-LOADING USER!!
-uid provided:  1
-user is LOGGED IN! redirecting to stream homepage
+192.168.157.54 - - [06/Dec/2024 11:49:20] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:49:20] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:49:20] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:49:20] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:49:20] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:49:22] "POST /logout HTTP/1.1" 302 -
+192.168.157.54 - - [06/Dec/2024 11:49:22] "GET /login?success=logged-out HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:49:22] "GET /static/form.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:49:22] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:49:26] "POST /login HTTP/1.1" 302 -
+192.168.157.54 - - [06/Dec/2024 11:49:26] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:49:26] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:49:26] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:49:26] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:49:26] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:52:15] "GET /faces HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:15] "GET /static/manageFaces.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:15] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_94.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_93.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_92.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_95.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_91.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:16] "GET /static/faceImages/face_89.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:33] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:34] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:34] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:36] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:36] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:36] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:52:36] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:52:36] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:53:13] "GET /faces HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:13] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:53:13] "GET /static/manageFaces.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /static/faceImages/face_96.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /static/faceImages/face_97.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /static/faceImages/face_95.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:53:14] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:53:58] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:58] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:58] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:58] "POST /faces/update HTTP/1.1" 200 -
 LOADING USER!!
 uid provided:  1
 face imgPath:  face_62.jpg
 face imgPath:  face_65.jpg
 face imgPath:  face_87.jpg
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-email sent!
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-LOADING USER!!
-uid provided:  1
-email sent!
-email sent!
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
 LOADING USER!!
 uid provided:  1
 LOADING USER!!
 uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-LOADING USER!!
-uid provided:  1
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-email sent!
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-base name:  Unknown 
-decided name:  Unknown
-Image and file inserted successfully as a BLOB into a table
-unknown face detected! Send picture to user!
-local ip:  192.168.157.27
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-local ip:  192.168.157.27
-email sent!
-email sent!
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-user is LOGGED IN! redirecting to stream homepage
-LOADING USER!!
-uid provided:  1
-getUserFromID ERROR: Recursive use of cursors not allowed.
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-user is LOGGED IN! redirecting to stream homepage
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-LOADING USER!!
-uid provided:  1
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-email sent!
-email sent!
-email sent!
-email sent!
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-email sent!
-email sent!
-email sent!
-email sent!
-local ip:  192.168.157.27
-email sent!
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-LOADING USER!!
-uid provided:  1
-local ip:  192.168.157.27
-email sent!
-LOADING USER!!
-uid provided:  1
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-email sent!
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-email sent!
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-email sent!
-face not detected again before timer timeout!
-local ip:  192.168.157.27
-email sent!
-email sent!
-email sent!
-email sent!
-email sent!
-local ip:  192.168.157.27
-email sent!
-local ip:  192.168.157.27
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-user is LOGGED IN! redirecting to stream homepage
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-update_face called!
-Face updated successfully.
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-local ip:  192.168.157.27
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-LOADING USER!!
-uid provided:  1
-email sent!
-local ip:  192.168.157.27
-email sent!
-email sent!
-email sent!
-LOADING USER!!
-uid provided:  1
-getUserFromID ERROR: Recursive use of cursors not allowed.
-LOADING USER!!
-uid provided:  1
-user is LOGGED IN! redirecting to stream homepage
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-LOADING USER!!
-uid provided:  1
-email sent!
-LOADING USER!!
-uid provided:  1
-getUserFromID ERROR: Recursive use of cursors not allowed.
-LOADING USER!!
-uid provided:  1
-user is LOGGED IN! redirecting to stream homepage
-LOADING USER!!
-uid provided:  1
-face imgPath:  face_62.jpg
-face imgPath:  face_65.jpg
-face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
-LOADING USER!!
-uid provided:  1
+logging out user!
+Received CSRF token: IjIzZDBlOWFhZmFjMTVkNzBhMGE3ZDNmNTQ5MGYwN2JmNTViN2Q4ODEi.Z1M5Hw.9TIO6ojsPmynXYwOjtyVqLtl6JA
+email provided:  wiispeed03@gmail.com
 LOADING USER!!
 uid provided:  1
 'getFaceFromName' ERROR: Recursive use of cursors not allowed.
@@ -508,30 +101,406 @@ uid provided:  1
 face imgPath:  face_62.jpg
 face imgPath:  face_65.jpg
 face imgPath:  face_87.jpg
-face imgPath:  face_88.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+LOADING USER!!
+uid provided:  1
+base name:  Unknown 
+decided name:  Unknown
+Image and file inserted successfully as a BLOB into a table
+unknown face detected! Send picture to user!
+local ip:  192.168.157.27
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+face imgPath:  face_92.jpg
+email sent!
+local ip:  192.168.157.27
+face not detected again before timer timeout!
+email sent!
+base name:  Unknown 
+decided name:  Unknown3
+Image and file inserted successfully as a BLOB into a table
+unknown face detected! Send picture to user!
+local ip:  192.168.157.27
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+face imgPath:  face_92.jpg
+face imgPath:  face_93.jpg
+local ip:  192.168.157.27
 local ip:  192.168.157.27
 email sent!
 email sent!
+email sent!
+local ip:  192.168.157.27
+face not detected again before timer timeout!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+email sent!
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+base name:  Unknown 
+decided name:  Unknown4
+Image and file inserted successfully as a BLOB into a table
+unknown face detected! Send picture to user!
+local ip:  192.168.157.27
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+face imgPath:  face_92.jpg
+face imgPath:  face_93.jpg
+face imgPath:  face_94.jpg
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+email sent!
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+face not detected again before timer timeout!
+email sent!
+email sent!
+base name:  Unknown 
+decided name:  Unknown5
+Image and file inserted successfully as a BLOB into a table
+unknown face detected! Send picture to user!
+local ip:  192.168.157.27
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+face imgPath:  face_92.jpg
+face imgPath:  face_93.jpg
+face imgPath:  face_94.jpg
+face imgPath:  face_95.jpg
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+LOADING USER!!
+uid provided:  1
+email sent!
+LOADING USER!!
+uid provided:  1
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_89.jpg
+face imgPath:  face_91.jpg
+face imgPath:  face_92.jpg
+face imgPath:  face_93.jpg
+face imgPath:  face_94.jpg
+face imgPath:  face_95.jpg
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+Error: (421, b'4.3.0 Temporary System Problem. Try again later (10). For more information,\n4.3.0 go to\n4.3.0  https://support.google.com/a/answer/3221692 006d021491bc7-5f2792236ecsm788507eaf.16 - gsmtp')
+Error: (421, b'4.3.0 Temporary System Problem. Try again later (10). For more information,\n4.3.0 go to\n4.3.0  https://support.google.com/a/answer/3221692 46e09a7af769-71dc497e9bbsm828963a34.40 - gsmtp')
+email sent!
+local ip:  192.168.157.27
+LOADING USER!!
+uid provided:  1
+'getFaceFromName' ERROR: Recursive use of cursors not allowed.
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+delete_face called!
+deleteFace called
+Face with uid 58 has been removed.
+LOADING USER!!
+uid provided:  1
+delete_face called!
+deleteFace called
+Face with uid 60 has been removed.
+LOADING USER!!
+uid provided:  1
+delete_face called!
+deleteFace called
+Face with uid 61 has been removed.
+LOADING USER!!
+uid provided:  1
+delete_face called!
+deleteFace called
+Face with uid 62 has been removed.
+email sent!
+LOADING USER!!
+uid provided:  1
+delete_face called!
+deleteFace called
+Face with uid 63 has been removed.
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_95.jpg
+email sent!
+email sent!
+LOADING USER!!
+uid provided:  1
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_95.jpg
+LOADING USER!!
+uid provided:  1
+email sent!
+email sent!
+email sent!
+email sent!
+email sent!
+email sent!
+email sent!
+email sent!
+email sent!
+face not detected again before timer timeout!
+base name:  Unknown 
+decided name:  Unknown
+Image and file inserted successfully as a BLOB into a table
+unknown face detected! Send picture to user!
+local ip:  192.168.157.27
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_95.jpg
+face imgPath:  face_96.jpg
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+email sent!
+email sent!
+local ip:  192.168.157.27
+email sent!
+local ip:  192.168.157.27
+local ip:  192.168.157.27
+email sent!
+email sent!
+face not detected again before timer timeout!
+local ip:  192.168.157.27
+email sent!
+email sent!
+email sent!
+email sent!
+face not detected again before timer timeout!
+email sent!
 base name:  Unknown 
 decided name:  Unknown2
-192.168.157.54 - - [06/Dec/2024 11:37:39] "POST /faces/update HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:39] "GET /login?next=/faces/update HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:40] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:40] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:40] "POST /faces/update HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:40] "POST /faces/delete HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:40] "GET /faces/data HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:40] "GET /static/faceImages/face_89.jpg HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:44] "POST /logout HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:44] "GET /login?success=logged-out HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:44] "GET /static/form.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:44] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:37:53] "POST /login HTTP/1.1" 302 -
-192.168.157.54 - - [06/Dec/2024 11:37:53] "GET /stream HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:54] "GET /static/styles.css HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:54] "GET /static/stream.js HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:37:54] "GET /stream/security_footage HTTP/1.1" 200 -
-192.168.157.54 - - [06/Dec/2024 11:37:54] "GET /favicon.ico HTTP/1.1" 204 -
+Image and file inserted successfully as a BLOB into a table
+unknown face detected! Send picture to user!
+local ip:  192.168.157.27
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_95.jpg
+face imgPath:  face_96.jpg
+face imgPath:  face_97.jpg
+email sent!
+LOADING USER!!
+uid provided:  1
+email sent!
+LOADING USER!!
+uid provided:  1
+face imgPath:  face_62.jpg
+face imgPath:  face_65.jpg
+face imgPath:  face_87.jpg
+face imgPath:  face_95.jpg
+face imgPath:  face_96.jpg
+face imgPath:  face_97.jpg
+email sent!
+email sent!
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+update_face called!
+Face updated successfully.
+LOADING USER!!
+uid provided:  1
+update_face called!
+192.168.157.54 - - [06/Dec/2024 11:53:58] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:59] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:53:59] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:54:33] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:54:33] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:33] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:34] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:54:35] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:54:42] "GET /faces HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:54:42] "GET /static/manageFaces.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:42] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /static/faceImages/face_95.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /static/faceImages/face_96.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:54:43] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:56:35] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:56:35] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:56:36] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:56:36] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:56:36] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:57:24] "GET /faces HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:24] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:24] "GET /static/manageFaces.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /static/faceImages/face_95.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:25] "GET /static/faceImages/face_96.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:35] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:35] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:35] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:35] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:35] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:35] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:37] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:37] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:37] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 11:57:37] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 11:57:37] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /faces HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /static/manageFaces.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /static/faceImages/face_95.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:00] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 12:06:07] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:07] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:07] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:07] "POST /faces/delete HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:07] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:08] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:09] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:09] "GET /static/stream.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:06:09] "GET /stream/security_footage HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:06:09] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /faces HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /static/styles.css HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /static/manageFaces.js HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /faces/data HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /static/faceImages/face_98.jpg HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /static/faceImages/face_87.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /favicon.ico HTTP/1.1" 204 -
+192.168.157.54 - - [06/Dec/2024 12:08:54] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
+192.168.157.54 - - [06/Dec/2024 12:09:01] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:09:02] "POST /faces/update HTTP/1.1" 302 -
+192.168.157.54 - - [06/Dec/2024 12:09:02] "GET /login?next=/faces/update HTTP/1.1" 302 -
+192.168.157.54 - - [06/Dec/2024 12:09:02] "GET /stream HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:09:02] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:09:02] "POST /faces/update HTTP/1.1" 200 -
+192.168.157.54 - - [06/Dec/2024 12:09:02] "GET /faces/data HTTP/1.1" 200 -
+/home/jmund/ShockerSecurity/StartShockerSecurity.sh: line 17: 29522 Segmentation fault      python backend/flaskApp.py
+StartShockerSecurity.sh bash script exited with code 1!
+
+
+Commiting logs...
+4 11:37:54] "GET /favicon.ico HTTP/1.1" 204 -
 192.168.157.54 - - [06/Dec/2024 11:47:37] "GET /faces HTTP/1.1" 200 -
 192.168.157.54 - - [06/Dec/2024 11:47:37] "GET /static/manageFaces.js HTTP/1.1" 304 -
 192.168.157.54 - - [06/Dec/2024 11:47:37] "GET /static/styles.css HTTP/1.1" 304 -
@@ -589,12 +558,17 @@ StartShockerSecurity.sh bash script exited with code 1!
 
 
 Commiting logs...
-57.54 - - [06/Dec/2024 11:04:01] "GET /favicon.ico HTTP/1.1" 204 -
-192.168.157.54 - - [06/Dec/2024 11:04:01] "GET /static/faceImages/face_62.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:04:01] "GET /static/faceImages/face_65.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:04:01] "GET /static/faceImages/face_70.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:04:01] "GET /static/faceImages/face_74.jpg HTTP/1.1" 304 -
-192.168.157.54 - - [06/Dec/2024 11:04:01] "GET /static/faceImages/face_73.jpg HTTP/1.1" 304 -
+[master cef7b4e] updated logs
+ 8 files changed, 339 insertions(+), 478 deletions(-)
+ create mode 100644 frontend/static/faceImages/face_86.jpg
+ create mode 100644 frontend/static/faceImages/face_87.jpg
+ create mode 100644 frontend/static/faceImages/face_88.jpg
+ create mode 100644 frontend/static/faceImages/face_89.jpg
+ create mode 100644 frontend/static/faceImages/face_90.jpg
+ create mode 100644 frontend/static/faceImages/face_91.jpg
+To https://github.com/jmund15/ShockerSecurity.git
+   fe860f8..cef7b4e  master -> master
+1.1" 304 -
 192.168.157.54 - - [06/Dec/2024 11:04:05] "POST /faces/update HTTP/1.1" 200 -
 192.168.157.54 - - [06/Dec/2024 11:04:05] "POST /faces/update HTTP/1.1" 200 -
 192.168.157.54 - - [06/Dec/2024 11:04:05] "POST /faces/update HTTP/1.1" 200 -
