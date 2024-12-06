@@ -14,7 +14,7 @@ echo ""
 source venv/bin/activate || { echo "Virtual environment not found!"; exit 1; }
 
 # Run the Python file
-python backend/flaskApp.py || { echo "StartShockerSecurity.sh bash script exited with code 1!"; exit 1; }
+python backend/flaskApp.py || { echo "StartShockerSecurity.sh bash script exited with code 1!"; }
 
 echo ""
 echo ""
