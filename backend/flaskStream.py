@@ -139,6 +139,8 @@ def run_face_recognition():
                 
                 # update the list of names
                 detected_face = getFaceFromName(name)
+                if detected_face is None:
+                    continue
                 if not detected_face.accepted:
                     if last_email_name != name:
                         img_path = 'frontend/static/faceImages/' + detected_face.image_path
