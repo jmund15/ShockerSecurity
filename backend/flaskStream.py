@@ -5,7 +5,7 @@ from picamera2 import Picamera2, MappedArray, Preview
 import numpy as np
 from imutils import paths
 import os
-import threading
+import threading, time
 #import queue
 import face_recognition
 import imutils
@@ -43,7 +43,15 @@ camera_inited = False
 recognition_thread = None
 thread_processing = False
 lock_face_annotations = False
-
+can_send_email = True
+last_email_name = None
+EMAIL_TIME = 10
+def reset_email_timer():
+    global can_send_email
+    can_send_email = True
+    email_timer = StreamTimer(EMAIL_TIME, reset_email_timer)
+    email_timer.start()
+email_timer: StreamTimer = StreamTimer(EMAIL_TIME, reset_email_timer)
 
 @stream.route('/stream', methods=['GET'])
 @login_required
@@ -69,7 +77,7 @@ def load_face_encodings():
         encoding_dict[dictNamesStr].append(face.name)
 
 def run_face_recognition():
-    global boxes, encodings, names, thread_processing, face_annotations
+    global boxes, encodings, names, thread_processing, face_annotations, last_email_name, can_send_email, email_timer
     thread_processing = True
     while True:
         #face_annotations = np.array([])
@@ -128,12 +136,25 @@ def run_face_recognition():
                 # will select first entry in the dictionary)
                 name = max(counts, key=counts.get)
                 #print(f'detected face: {name}!')
-            # update the list of names
+                
+                # update the list of names
+                detected_face = getFaceFromName(name)
+                if not detected_face.accepted:
+                    if last_email_name != name:
+                        img_path = 'frontend/static/faceImages/' + detected_face.image_path
+                        alertUsers(img_path, name=name)
+                        last_email_name = name
+                        email_timer = StreamTimer(EMAIL_TIME, reset_email_timer)
+                        email_timer.start()
+                        can_send_email = False
+                    elif can_send_email:
+                        img_path = 'frontend/static/faceImages/' + detected_face.image_path
+                        alertUsers(img_path, name=name)
+                        email_timer = StreamTimer(EMAIL_TIME, reset_email_timer)
+                        email_timer.start()
+                        can_send_email = False
+            
             names.append(name)
-            detected_face = getFaceFromName(name)
-            if not detected_face.accepted:
-                img_path = 'frontend/static/faceImages/' + detected_face.image_path
-                alertUsers(img_path, previously_detected=True)
         if len(names) > 0:
             # Create a transparent RGBA image with the same dimensions as the original
             face_annotations = np.zeros((proc_frame.shape[0], proc_frame.shape[1], 4), dtype=np.uint8)
@@ -225,7 +246,7 @@ def check_unknown_alert(unknown_encoding):
         print("unknown face detected! Send picture to user!")
         #print("unknown num: {}".format(unknown_num))
         unknown_num += 1
-        alertUsers(face_path, previously_detected=False)
+        alertUsers(face_path, name='Unknown!')
         load_face_encodings() #added new face so reload encodings
     else: #timer finished before registering
         print('face not detected again before timer timeout!')

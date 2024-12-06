@@ -4,6 +4,7 @@ from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+import threading
 
 from SQLiteConnect import getAllEmails
 
@@ -20,7 +21,7 @@ def get_local_ip():
     except Exception as e:
         return f"Error fetching local IP address: {e}"
 
-def alertUsers(image_path, previously_detected = False):
+def alertUsers(image_path, name = 'Unidentified'):
     time = datetime.now().strftime("%I:%M %p")
     day = datetime.now().strftime("%m/%d/%Y")
     local_ip = get_local_ip()
@@ -29,7 +30,7 @@ def alertUsers(image_path, previously_detected = False):
     recipient_emails = getAllEmails() 
 
     subject = "ShockerSecurity Alert: "
-    if previously_detected:
+    if name != 'Unidentified':
         subject += "Detected Unauthorized Person!"
     else:
         subject += "Detected Unidentified Person!"
@@ -37,17 +38,24 @@ def alertUsers(image_path, previously_detected = False):
     body = f"""
 <html>
     <body>
-        <p>The person was seen at {time} on {day}. See the attached image for details.</p>
+        <p>The unauthorized individual labeled "{name}" was seen at {time} on {day}. See the attached image for details.</p>
         <p>To make adjustments, login <a href="http://{local_ip}:3000">here</a>.</p>
     </body>
 </html>
 """
     #http://192.168.155.54:3000
 
-    sendEmail(recipient_emails, subject, body, image_path)
+    # Example usage
+    sendEmailInThread(
+        recipient_emails=recipient_emails,
+        subject=subject,
+        body_html=body,
+        image_path=image_path
+    )
+    #sendEmail(recipient_emails, subject, body, image_path)
 
 def sendEmail(recipient_emails, subject, body_html, image_path=None):
-    print('sending email! \n\tsubject: ', subject, '\n\tbody: ', body_html, '\n\temails: ', recipient_emails, '\n\timage: ', image_path)
+    #print('sending email! \n\tsubject: ', subject, '\n\tbody: ', body_html, '\n\temails: ', recipient_emails, '\n\timage: ', image_path)
     
     smtp_server = 'smtp.gmail.com'  # SMTP server (use smtp-mail.outlook.com for Outlook)
     smtp_port = 465  # SSL port (use 587 for STARTTLS)
@@ -89,4 +97,9 @@ def sendEmail(recipient_emails, subject, body_html, image_path=None):
     #     server.login(sender_email, sender_password)
     #     print('logged in!')
     #     server.sendmail(sender_email, recipient_email, msg.as_string())
+
+def sendEmailInThread(recipient_emails, subject, body_html, image_path=None):
+    # This wrapper function will run sendEmail in a new thread
+    email_thread = threading.Thread(target=sendEmail, args=(recipient_emails, subject, body_html, image_path))
+    email_thread.start()  # Start the thread
 

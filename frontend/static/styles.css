@@ -39,7 +39,9 @@ h1:hover {
     align-items: center; /* Center the content horizontally inside the container */
 
     height: 90vh; /* Full height of the viewport */
+/*
     overflow: hidden;
+*/
 }
 
 /* Video Stream Container */

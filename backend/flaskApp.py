@@ -1,3 +1,4 @@
+import sys
 from datetime import timedelta
 from flask import Flask
 from flask_login import LoginManager
@@ -13,7 +14,7 @@ from flaskStream import stream, init_video, camera_inited
 from flaskManageFaces import faces
 
 from SQLiteConnect import initialize_db
-from sendEmail import alertUsers
+from sendEmail import alertUsers, sendEmail, get_local_ip
 
 app = Flask(__name__, static_folder='../frontend/static')
 app.debug = False
@@ -36,10 +37,28 @@ app.register_blueprint(logout)
 app.register_blueprint(register)
 app.register_blueprint(stream)
 app.register_blueprint(faces)
+
+# Error handler for general exceptions
+@app.errorhandler(Exception)
+def handle_exception(error):
+    # Print the error (optional)
+    print(f"ShockerSecurity ERROR || {error}\nApplication exiting...")
+    
+    # Exit the application
+    sys.exit(1)
    
 if __name__ == '__main__':
     #print('running main!')
     initialize_db()
+    local_ip = get_local_ip()
+    body = f'''
+<html>
+    <body>
+        <p>To make adjustments, login <a href="http://{local_ip}:3000">here</a>.</p>
+    </body>
+</html>
+'''
+    sendEmail(['wiispeed03@gmail.com'], 'ShockerSecurity Launched!', body)
     #alertUsers("C:\\Users\\jmund\\WSU Shtuff\\CS 598\\ShockerSecurity\\Dr. Joel\\image_0.jpg")
     #if not camera_inited:
     init_video()

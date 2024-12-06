@@ -134,9 +134,7 @@ def getFaceFromName(name) -> Face:
         # Execute the statement
         curs.execute(statement, (name,))
         result = curs.fetchone()
-        
-        #print('getFaceFromName result: ', result)
-        
+                
         if result:
             return Face(result[0], result[1], result[2], result[4], result[3])
         else:
