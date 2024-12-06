@@ -35,10 +35,10 @@ h1:hover {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: start; /* Center the content vertically inside the container */
+    justify-content: start; /* align the content vertically inside the container */
     align-items: center; /* Center the content horizontally inside the container */
 
-    height: 90vh; /* Full height of the viewport */
+    max-height: 90vh; /* Full height of the viewport */
 /*
     overflow: hidden;
 */
