@@ -48,6 +48,10 @@ function enterFullScreen() {
     } else if (videoContainer.msRequestFullscreen) { // IE/Edge
         videoContainer.msRequestFullscreen();
     }
+    
+    // After entering fullscreen, force the container to maintain 4:3 aspect ratio
+    videoContainer.style.width = '100vw'; // Full width of viewport
+    videoContainer.style.height = '75vw'; // 4:3 aspect ratio (height = 3/4 * width)
 }
 
 // Function to exit full-screen mode

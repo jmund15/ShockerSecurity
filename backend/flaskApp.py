@@ -1,4 +1,4 @@
-import sys
+import sys, os, signal
 from datetime import timedelta
 from flask import Flask
 from flask_login import LoginManager
@@ -45,7 +45,11 @@ def handle_exception(error):
     print(f"ShockerSecurity ERROR || {error}\nApplication exiting...")
     
     # Exit the application
-    sys.exit(1)
+    #sys.exit(1)
+    
+    """Shut down the Flask server."""
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        os.kill(os.getpid(), signal.SIGINT)  # Graceful shutdown
    
 if __name__ == '__main__':
     #print('running main!')
