@@ -28,7 +28,7 @@ You can view the full implementation of the Flask app [here](https://github.com/
 ### Video Capture, Feed, and Facial Recognition
 The system continuously captures frames from the camera, which are processed in real time for face detection. When the system detects a face, it compares it to previously stored face data, running through a set of encodings stored in the database.
 
-You can view the full implementation for facial recognition [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/flaskApp.py#L1).
+You can view the full implementation for facial recognition [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/flaskStream.py#L79).
 
 ---
 
