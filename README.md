@@ -21,35 +21,35 @@ At the heart of this project is a Flask web application. Flask isn’t the most 
 
 The Flask app is built on several blueprints, each handling a specific function, such as user login, video streaming, and face detection. 
 
-You can view the full implementation of the Flask app [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/flaskApp.py#L1).
+You can view the full implementation of the Flask app [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/flaskApp.py#L1).
 
 ---
 
 ### Video Capture, Feed, and Facial Recognition
 The system continuously captures frames from the camera, which are processed in real time for face detection. When the system detects a face, it compares it to previously stored face data, running through a set of encodings stored in the database.
 
-You can view the full implementation for facial recognition [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/flaskStream.py#L79).
+You can view the full implementation for facial recognition [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/flaskApp.py#L1).
 
 ---
 
 ### Managing the Database with SQLite
 SQLite was used to store user credentials and face data securely. The system allows adding, updating, and deleting face records, with a unique naming system to avoid overwriting existing records.
 
-You can view the full database handling logic [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/SQLiteConnect.py#L1).
+You can view the full database handling logic [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/SQLiteConnect.py#L1).
 
 ---
 
 ### User Authentication and Access Control
 User authentication is handled using Flask-Login. The login system ensures that only authorized users can access certain parts of the application, such as the live feed and face management sections.
 
-You can find the user authentication code [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/flaskLogin.py#L26).
+You can find the user authentication code [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/flaskLogin.py#L26).
 
 ---
 
 ### Email Alerts and Notifications
 The system sends email notifications when unauthorized or unidentified faces are detected. The emails include a photo of the person and a link to the live stream.
 
-You can view the email alert implementation [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/sendEmail.py#L1).
+You can view the email alert implementation [here](https://github.com/jmund15/ShockerSecurity/blob/master/backend/sendEmail.py#L1).
 
 ---
 
