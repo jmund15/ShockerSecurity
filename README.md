@@ -70,12 +70,12 @@ You can find the full frontend structure [here](https://github.com/jmund15/Shock
 
 ## Hardware Development and Implementation
 
-### Procuring the Hardware
+### Hardware Setup
 The hardware setup includes a Raspberry Pi 4B and a Camera Module 3 NOIR, chosen for their compatibility and performance.
 
 ---
 
-### The 3D-Printed Case
+### 3D-Printed Case
 A custom 3D-printed case was designed to house the Raspberry Pi and camera, providing durability and easy mounting on a door or wall.
 
 ---
