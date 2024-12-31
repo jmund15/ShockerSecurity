@@ -17,7 +17,7 @@ Flask was used to build a lightweight web server where users could log in, watch
 ## Backend Development and Implementation
 
 ### Setting Up the Flask App
-At the heart of this project is a Flask web application. Flask isn’t the most complex web framework, but its simplicity is what makes it perfect for this kind of project—just enough to make your system run smoothly without needing to spend hours navigating through a bloated structure. 
+At the heart of this project is a Flask web application. Flask isn’t the most complex web framework, but its simplicity is what makes it perfect for this kind of project.
 
 The Flask app is built on several blueprints, each handling a specific function, such as user login, video streaming, and face detection. 
 
