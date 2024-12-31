@@ -1,114 +1,92 @@
-# ShockerSecurity
+# ShockerSecurity: DIY Security Camera System with Facial Recognition
 
-## Senior Design II - Engineering Open House Presentation
-**Team Members**: Jacob Mund & Tina Leung
+By: Jacob M & Tina L
 
----
+## High-level Overview
+The core stack for this project was pretty straightforward: the Raspberry Pi, a camera module, and a combination of Python, OpenCV, and Flask. The Raspberry Pi 4 served as the main processing unit, with the camera module capturing video footage. Python, being one of the most accessible programming languages for prototyping (as well as the main recommended language for developing on a Raspberry Pi), made sense for writing scripts to handle the image processing and facial recognition. We used OpenCV for the computer vision side of things, mainly for detecting faces in the camera feed.
 
-## Project Overview
+Flask was used to build a lightweight web server where users could log in, watch live footage, and manage the database. This part was critical since it allowed authorized users to interact with the system through a simple interface without needing to get their hands dirty in the code. To store the footage, we opted for a SQLite database where each entry contained metadata like the date and time of recording, the faces identified, and whether or not the footage had been flagged. The backend logic, handled by Python, made it easy to update, delete, and flag footage based on facial recognition results.
 
-**ShockerSecurity** is a compact, cost-efficient, and scalable security system built using a Raspberry Pi 4B with the Pi Camera Module 3 (NOIR). The system features facial recognition capabilities and utilizes a variety of technologies to provide a complete security solution. 
-
-- **System Cost**: < $100
-- **Camera**: Pi Camera Module 3 (NOIR) chosen for night-vision capabilities
-- **Resolution**: Footage captured at 30fps
-- **Main Features**: 
-  - Facial identification system with live footage streaming
-  - SQLite database for storing user data and faces
-  - Email notifications for unauthorized face detection
+### Core Components
+- **Backend**: Python, OpenCV, Flask, SQLite
+- **Frontend**: HTML, CSS, JavaScript
+- **Hardware**: Raspberry Pi 4, Camera Module 3 NOIR
 
 ---
 
-## Features & Code Showcase
+## Backend Development and Implementation
 
-### Security System Features
+### Setting Up the Flask App
+At the heart of this project is a Flask web application. Flask isn’t the most complex web framework, but its simplicity is what makes it perfect for this kind of project—just enough to make your system run smoothly without needing to spend hours navigating through a bloated structure. 
 
-#### 1. **Capturing & Yielding Frames (Main Thread)**
-   - The main thread captures and yields frames continuously from the camera module.
+The Flask app is built on several blueprints, each handling a specific function, such as user login, video streaming, and face detection. 
 
-#### 2. **Face Identification (Background Thread)**
-   - Facial recognition runs in the background to process frames and identify faces.
-   - Face annotations are created and displayed when identified.
-
-#### 3. **SQLite Database Integration**
-   - **Database**: SQLite is used for storing user accounts and face data.
-   - **Read Queries**: Return respective Python class objects.
-   - **Write Queries**: Used when new faces are detected or users are registered.
-
-#### 4. **Email Notification System**
-   - **Purpose**: Alerts users on unknown or unauthorized face detections.
-   - All registered users receive an email with the image of the detected face.
-
-#### 5. **Streaming Module**
-   - **Live Streaming**: Security footage is streamed frame-by-frame through an MJPEG stream.
-   - Users can access the stream and switch to fullscreen mode.
+You can view the full implementation of the Flask app [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/flaskApp.py#L1).
 
 ---
 
-## Feature Showcase
+### Video Capture, Feed, and Facial Recognition
+The system continuously captures frames from the camera, which are processed in real time for face detection. When the system detects a face, it compares it to previously stored face data, running through a set of encodings stored in the database.
 
-### Database and Email
-
-- **Email Notification**:
-  - Notifies users of any unauthorized face detection.
-  
-- **Database Module Excerpt**:
-  - Shows how facial data and user accounts are handled in the SQLite database.
+You can view the full implementation for facial recognition [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/flaskStream.py#L79).
 
 ---
 
-### Face Management and UI
+### Managing the Database with SQLite
+SQLite was used to store user credentials and face data securely. The system allows adding, updating, and deleting face records, with a unique naming system to avoid overwriting existing records.
 
-- **Face Management**:
-  - Users can view, update, and remove faces from the database through a dedicated UI page.
-  
-- **Live Stream UI**:
-  - A user-friendly interface for streaming camera footage in real-time.
-  
-- **Database Management UI**:
-  - A page for managing user face data, including adding and deleting faces.
+You can view the full database handling logic [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/SQLiteConnect.py#L1).
 
 ---
 
-### Authentication and Security
+### User Authentication and Access Control
+User authentication is handled using Flask-Login. The login system ensures that only authorized users can access certain parts of the application, such as the live feed and face management sections.
 
-- **Login System**:
-  - Implemented a secure login system with hashed passwords stored in the database.
-  - CSRF and CORS validation implemented for security.
-
-- **3D-Printed Case**:
-  - A custom-designed CAD model to house the ShockerSecurity system.
-  - The case features cutouts for cable ports and camera module.
-  - The final design is intended to be mounted on a door or window sill.
+You can find the user authentication code [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/flaskLogin.py#L26).
 
 ---
 
-## Feature Showcase: Login and Case
+### Email Alerts and Notifications
+The system sends email notifications when unauthorized or unidentified faces are detected. The emails include a photo of the person and a link to the live stream.
 
-- **User Login UI**:
-  - Interface for securely logging into the system.
+You can view the email alert implementation [here](https://github.com/jmund15/ShockerSecurity/blob/0161ed6565bb9fbf4d2d56fb28d644db717cb095/backend/sendEmail.py#L1).
 
-- **3D-Printed Case**:
-  - The 3D-printed case is designed to securely house the system, ensuring protection and portability.
+---
+
+## Frontend Development and Implementation
+
+### HTML & CSS
+The frontend interface is built using HTML, providing the structure for key sections like the Face Management Module and Streaming Module.
+CSS was used to style the entire interface, ensuring a clean and user-friendly experience.
+
+---
+
+### JavaScript
+JavaScript enables interactivity, such as adding or removing faces from the system and controlling the video stream's functionality.
+
+---
+
+You can find the full frontend structure [here](https://github.com/jmund15/ShockerSecurity/tree/master/frontend).
+
+## Hardware Development and Implementation
+
+### Procuring the Hardware
+The hardware setup includes a Raspberry Pi 4B and a Camera Module 3 NOIR, chosen for their compatibility and performance.
+
+---
+
+### The 3D-Printed Case
+A custom 3D-printed case was designed to house the Raspberry Pi and camera, providing durability and easy mounting on a door or wall.
 
 ---
 
 ## Conclusion
+This DIY security camera system integrates facial recognition, video streaming, and an intuitive web interface for real-time monitoring. The project involved both software and hardware development, providing a valuable learning experience.
 
-Through the course of this project, we have gained experience and skills in the following areas:
-- Project management
-- Hardware and software integration
-- Full stack development
-- Database management
-- Facial detection technology
-- CAD design and 3D printing
-- Team communication and workload delegation
+Feel free to explore the code and hardware design through the links above, and contribute if you’d like to improve or extend the system.
 
 ---
 
-## Acknowledgements
-
-Thank you to our professors and mentors for their guidance and support throughout this project. 
-
-Feel free to explore the code and contribute to future improvements!
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
